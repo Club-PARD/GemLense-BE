@@ -26,18 +26,17 @@ public class CardRequest {
         private List<String> thinking;
         private List<String> role;
         private List<String> conflictResolution;
-        private String timePreference;
-        private String restPreference;
-        private String friendship;
-        private String goal;
+        private List<String> timePreference;
+        private List<String> restPreference;
+        private List<String> friendship; // 수정: String -> List<String>
+        private List<String> goal; // 수정: String -> List<String>
         private String important;
-        private String certificates;
-        private String tools;
-        private String awards;
-        private String portfolio;
-        private String additionalInfo;
-        private String file;
-        private String url;
+        private List<String> certificates; // 수정: String -> List<String>
+        private List<String> tools; // 수정: String -> List<String>
+        private List<String> awards; // 수정: String -> List<String>
+        private List<String> portfolio; // 수정: String -> List<String>
+        private List<String> additionalInfo; // 수정: String -> List<String>
+        private String url; // 수정: String -> List<String>
     }
 
     @Getter
@@ -57,17 +56,16 @@ public class CardRequest {
         private List<String> thinking;
         private List<String> role;
         private List<String> conflictResolution;
-        private String timePreference;
-        private String restPreference;
-        private String friendship;
-        private String goal;
+        private List<String> timePreference;
+        private List<String> restPreference;
+        private List<String> friendship;
+        private List<String> goal; // 수정: String -> List<String>
         private String important;
-        private String certificates;
-        private String tools;
-        private String awards;
-        private String portfolio;
-        private String additionalInfo;
-        private String file;
-        private String url;
+        private List<String> certificates; // 수정: String -> List<String>
+        private List<String> tools; // 수정: String -> List<String>
+        private List<String> awards; // 수정: String -> List<String>
+        private List<String> portfolio; // 수정: String -> List<String>
+        private List<String> additionalInfo; // 수정: String -> List<String>
+        private String url; // 수정: String -> List<String>
     }
 }

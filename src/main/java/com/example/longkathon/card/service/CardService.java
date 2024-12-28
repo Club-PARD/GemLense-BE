@@ -10,7 +10,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,22 +34,21 @@ public class CardService {
                 .age(req.getAge())
                 .phone(req.getPhone())
                 .email(req.getEmail())
-                .communication(req.getCommunication())
-                .teamwork(req.getTeamwork())
-                .thinking(req.getThinking())
-                .role(req.getRole())
-                .conflictResolution(req.getConflictResolution())
-                .timePreference(req.getTimePreference())
-                .restPreference(req.getRestPreference())
-                .friendship(req.getFriendship())
-                .goal(req.getGoal())
+                .communication(Optional.ofNullable(req.getCommunication()).orElseGet(ArrayList::new))
+                .teamwork(Optional.ofNullable(req.getTeamwork()).orElseGet(ArrayList::new))
+                .thinking(Optional.ofNullable(req.getThinking()).orElseGet(ArrayList::new))
+                .role(Optional.ofNullable(req.getRole()).orElseGet(ArrayList::new))
+                .conflictResolution(Optional.ofNullable(req.getConflictResolution()).orElseGet(ArrayList::new))
+                .timePreference(Optional.ofNullable(req.getTimePreference()).orElseGet(ArrayList::new))
+                .restPreference(Optional.ofNullable(req.getRestPreference()).orElseGet(ArrayList::new))
+                .friendship(Optional.ofNullable(req.getFriendship()).orElseGet(ArrayList::new))
+                .goal(Optional.ofNullable(req.getGoal()).orElseGet(ArrayList::new))
                 .important(req.getImportant())
-                .certificates(req.getCertificates())
-                .tools(req.getTools())
-                .awards(req.getAwards())
-                .portfolio(req.getPortfolio())
-                .additionalInfo(req.getAdditionalInfo())
-                .file(req.getFile())
+                .certificates(Optional.ofNullable(req.getCertificates()).orElseGet(ArrayList::new))
+                .tools(Optional.ofNullable(req.getTools()).orElseGet(ArrayList::new))
+                .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
+                .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
+                .additionalInfo(Optional.ofNullable(req.getAdditionalInfo()).orElseGet(ArrayList::new))
                 .url(req.getUrl())
                 .user(user)
                 .build();
@@ -61,7 +62,7 @@ public class CardService {
 
         return cardRepository.findByUser(user).stream()
                 .map(card -> CardResponse.builder()
-                        .cardId(card.getId())
+                        .cardId(card.getCardId())
                         .name(card.getName())
                         .gender(card.getGender())
                         .identity(card.getIdentity())
@@ -84,7 +85,6 @@ public class CardService {
                         .awards(card.getAwards())
                         .portfolio(card.getPortfolio())
                         .additionalInfo(card.getAdditionalInfo())
-                        .file(card.getFile())
                         .url(card.getUrl())
                         .build())
                 .collect(Collectors.toList());
@@ -109,7 +109,7 @@ public class CardService {
         if (req.getConflictResolution() != null) card.setConflictResolution(req.getConflictResolution());
         if (req.getTimePreference() != null) card.setTimePreference(req.getTimePreference());
         if (req.getRestPreference() != null) card.setRestPreference(req.getRestPreference());
-        if (req.getRestPreference() != null) card.setFriendship(req.getFriendship());
+        if (req.getFriendship() != null) card.setFriendship(req.getFriendship());
         if (req.getGoal() != null) card.setGoal(req.getGoal());
         if (req.getImportant() != null) card.setImportant(req.getImportant());
         if (req.getCertificates() != null) card.setCertificates(req.getCertificates());
@@ -117,7 +117,6 @@ public class CardService {
         if (req.getAwards() != null) card.setAwards(req.getAwards());
         if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
-        if (req.getFile() != null) card.setFile(req.getFile());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
 
         cardRepository.save(card);
