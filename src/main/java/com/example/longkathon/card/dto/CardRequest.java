@@ -36,7 +36,7 @@ public class CardRequest {
         private List<String> awards; // 수정: String -> List<String>
         private List<String> portfolio; // 수정: String -> List<String>
         private List<String> additionalInfo; // 수정: String -> List<String>
-        private String url; // 수정: String -> List<String>
+        private List<String> url; // 수정: String -> List<String>
     }
 
     @Getter
@@ -66,6 +66,6 @@ public class CardRequest {
         private List<String> awards; // 수정: String -> List<String>
         private List<String> portfolio; // 수정: String -> List<String>
         private List<String> additionalInfo; // 수정: String -> List<String>
-        private String url; // 수정: String -> List<String>
+        private List<String> url; // 수정: String -> List<String>
     }
 }

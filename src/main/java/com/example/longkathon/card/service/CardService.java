@@ -49,7 +49,7 @@ public class CardService {
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
                 .additionalInfo(Optional.ofNullable(req.getAdditionalInfo()).orElseGet(ArrayList::new))
-                .url(req.getUrl())
+                .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new)) // 수정: URL을 List로 매핑
                 .user(user)
                 .build();
 
@@ -85,7 +85,7 @@ public class CardService {
                         .awards(card.getAwards())
                         .portfolio(card.getPortfolio())
                         .additionalInfo(card.getAdditionalInfo())
-                        .url(card.getUrl())
+                        .url(card.getUrl()) // 수정: URL을 List로 반환
                         .build())
                 .collect(Collectors.toList());
     }
@@ -117,7 +117,7 @@ public class CardService {
         if (req.getAwards() != null) card.setAwards(req.getAwards());
         if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
-        if (req.getUrl() != null) card.setUrl(req.getUrl());
+        if (req.getUrl() != null) card.setUrl(req.getUrl()); // 수정: URL 업데이트
 
         cardRepository.save(card);
     }

@@ -10,12 +10,12 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // 모든 엔드포인트에 대해 CORS 허용
         registry.addMapping("/**")
-                .allowedOrigins("http://<ReactApp IP>:<ReactApp Port>")  // React 앱의 주소
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true);
+                .allowedOrigins("http://localhost:3000") // React 앱 주소
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH") // 허용할 메서드
+                .allowedHeaders("*") // 모든 헤더 허용
+                .allowCredentials(true); // 인증 정보 허용 (필요한 경우)
     }
 }
+
 

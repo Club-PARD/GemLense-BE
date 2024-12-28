@@ -35,5 +35,5 @@ public class CardResponse {
     private List<String> awards;
     private List<String> portfolio;
     private List<String> additionalInfo;
-    private String url;
+    private List<String> url;
 }

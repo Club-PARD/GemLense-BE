@@ -117,7 +117,11 @@ public class Card {
     @Builder.Default
     private List<String> additionalInfo = new ArrayList<>();
 
-    private String url;
+    @ElementCollection
+    @CollectionTable(name = "card_url", joinColumns = @JoinColumn(name = "card_id"))
+    @Column(name = "url_value") // 수정: URL을 List로 변경
+    @Builder.Default
+    private List<String> url = new ArrayList<>();
 
     private Long num;
 }
