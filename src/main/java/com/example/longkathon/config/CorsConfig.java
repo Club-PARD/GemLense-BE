@@ -2,19 +2,24 @@ package com.example.longkathon.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // React 앱 주소
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH") // 허용할 메서드
-                .allowedHeaders("*") // 모든 헤더 허용
-                .allowCredentials(true); // 인증 정보 허용 (필요한 경우)
+public class CorsConfig {
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");//(post,get,put.patch 이런거 뚫어줌. post만 뚫고싶으면 *대신 post넣으면 됌!)
+        source.registerCorsConfiguration("*", config);
+        return new CorsFilter(source);
     }
 }
 

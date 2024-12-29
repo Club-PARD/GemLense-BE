@@ -1,36 +1,38 @@
 package com.example.longkathon.config;
 
-import com.example.longkathon.CustomOAuth2UserService;
+import com.example.longkathon.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomOAuth2UserService customOAuth2UserService;
+    private final PrincipalOauth2UserService principalOauth2UserService;
+    private final CorsConfig corsConfig;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .sessionManagement(session -> session
-                        .sessionFixation().newSession())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/oauth2/**").permitAll() // 허용 경로 설정
-                        .anyRequest().authenticated() // 나머지 경로는 인증 필요
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/Customlogin") // 커스텀 로그인 페이지
-//                        .defaultSuccessUrl("/dashboard", true) // 로그인 성공 시 리디렉션
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService) // 사용자 정보 서비스 등록
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.addFilter(corsConfig.corsFilter());
+        http.authorizeHttpRequests(au ->
+                au.anyRequest().permitAll());
+        http.oauth2Login(
+                oauth -> oauth
+                        .loginPage("/Customlogin")
+                        .defaultSuccessUrl("/home")
+                        .userInfoEndpoint(
+                                userInfo ->
+                                        userInfo.userService(principalOauth2UserService)
                         )
-                );
-
-        return http.build(); // SecurityFilterChain 반환
+        );
+        return http.build();
     }
 }
