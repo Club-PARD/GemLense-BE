@@ -116,4 +116,30 @@ public class PostService {
                         .collect(Collectors.toList()))
                 .build();
     }
+
+    public List<PostResponse> getPostsByOwner(Long userId) {
+        List<Post> posts = postRepository.findByOwnerId(userId);
+        return posts.stream()
+                .map(post -> PostResponse.builder()
+                        .postId(post.getPostId())
+                        .title(post.getTitle())
+                        .category(post.getCategory())
+                        .date(post.getDate())
+                        .member(post.getMember())
+                        .url(post.getUrl())
+                        .memo(post.getMemo())
+                        .img(post.getImg())
+                        .selectCard(post.getSelectCard())
+                        .ownerId(post.getOwnerId())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<PostResponse> getPostsAppliedByUser(Long userId) {
+        List<Post> posts = postRepository.findByApplications_User_UserId(userId);
+
+        return posts.stream()
+                .map(PostResponse::fromAppliedPost) // 간단한 정보만 매핑
+                .collect(Collectors.toList());
+    }
 }

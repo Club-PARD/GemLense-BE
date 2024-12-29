@@ -39,4 +39,16 @@ public class PostController {
         PostResponse postResponse = postService.getPostWithApplicants(postId);
         return ResponseEntity.ok(postResponse);
     }
+
+    @GetMapping("/owner/{userId}")
+    public ResponseEntity<List<PostResponse>> getPostsByOwner(@PathVariable Long userId) {
+        List<PostResponse> posts = postService.getPostsByOwner(userId);
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/applied/{userId}")
+    public ResponseEntity<List<PostResponse>> getPostsAppliedByUser(@PathVariable Long userId) {
+        List<PostResponse> posts = postService.getPostsAppliedByUser(userId);
+        return ResponseEntity.ok(posts);
+    }
 }

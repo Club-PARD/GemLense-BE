@@ -16,13 +16,13 @@ public class AppController {
     private final AppService appService;
 
     // 신청 상태 처리
-    @PutMapping("/{postId}/{userId}")
+    @PatchMapping("/{postId}/{appUserId}")
     public ResponseEntity<Void> handleApplication(
             @PathVariable Long postId,
-            @PathVariable Long userId,
-            @RequestBody String status // "APPROVED" 또는 "REJECTED"
+            @PathVariable Long appUserId,
+            @RequestBody String status
     ) {
-        appService.handleApplication(postId, userId, status);
+        appService.handleApplication(postId, appUserId, status);
         return ResponseEntity.ok().build();
     }
 

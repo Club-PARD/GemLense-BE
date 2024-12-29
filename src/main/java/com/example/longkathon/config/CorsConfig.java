@@ -6,21 +6,23 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-
 @Configuration
 public class CorsConfig {
+
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        // CORS 설정 생성
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");//(post,get,put.patch 이런거 뚫어줌. post만 뚫고싶으면 *대신 post넣으면 됌!)
-        source.registerCorsConfiguration("*", config);
+        config.setAllowCredentials(true); // 자격 증명 허용
+        config.addAllowedOriginPattern("*"); // 모든 출처 허용 (배포 시 특정 도메인으로 변경 권장)
+        config.addAllowedHeader("*"); // 모든 헤더 허용
+        config.addAllowedMethod("*"); // 모든 HTTP 메서드 허용
+
+        // 모든 경로에 대해 CORS 설정 등록
+        source.registerCorsConfiguration("/**", config); // URL 패턴 수정
+
         return new CorsFilter(source);
     }
 }
-
-

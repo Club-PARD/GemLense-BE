@@ -31,6 +31,11 @@ public class LandController {
         return ResponseEntity.ok(landService.getUrls(landId));
     }
 
+    @GetMapping("/{landId}/urlnames")
+    public ResponseEntity<List<String>> getUrlNames(@PathVariable Long landId) {
+        return ResponseEntity.ok(landService.getUrlNames(landId));
+    }
+
     @PostMapping("/{landId}/url")
     public ResponseEntity<Void> addUrl(@PathVariable Long landId, @RequestBody String url) {
         landService.addUrl(landId, url);

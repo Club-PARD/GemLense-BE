@@ -2,6 +2,7 @@
 package com.example.longkathon.post.dto;
 
 import com.example.longkathon.application.dto.AppResponse;
+import com.example.longkathon.post.entity.Post;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,4 +24,14 @@ public class PostResponse {
     private Long ownerId; // 방장 ID
 
     private List<AppResponse> applicants;
+
+    // 특정 필드만 초기화하는 메서드 추가
+    public static PostResponse fromAppliedPost(Post post) {
+        return PostResponse.builder()
+                .postId(post.getPostId())
+                .title(post.getTitle())
+                .category(post.getCategory())
+                .ownerId(post.getOwnerId())
+                .build();
+    }
 }

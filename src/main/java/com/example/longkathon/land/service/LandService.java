@@ -69,6 +69,13 @@ public class LandService {
         return land.getUrlList();
     }
 
+    public List<String> getUrlNames(Long landId) {
+        Land land = landRepository.findById(landId)
+                .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
+
+        return land.getUrlList();
+    }
+
     // URL 추가 (urlName)
     @Transactional
     public void addUrlName(Long landId, String urlName) {
