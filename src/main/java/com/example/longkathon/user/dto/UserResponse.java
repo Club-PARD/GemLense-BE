@@ -25,16 +25,4 @@ public class UserResponse {
         private String landName;
         private String role; // "owner" or "member"
     }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UserCardResponse {
-        private Long cardId;
-        private String cardName;
-        private String cardEmail;
-        private String identity;
-        private String major;
-    }
 }

@@ -8,7 +8,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -44,8 +43,7 @@ public class Land {
     @OneToMany(mappedBy = "land", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LandUser> landUsers = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = true) // NULL을 허용
+    @OneToOne
+    @JoinColumn(name = "post_id", unique = true, nullable = false) // 1대1 관계 설정
     private Post post;
-
 }

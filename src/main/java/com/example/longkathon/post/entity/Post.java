@@ -1,3 +1,4 @@
+
 package com.example.longkathon.post.entity;
 
 import com.example.longkathon.application.entity.App;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -31,7 +33,12 @@ public class Post {
     private Long selectCard;
     private LocalDateTime createTime;
 
+    @Column(name = "owner_id")
+    private Long ownerId;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
 
+    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Land land;
 }

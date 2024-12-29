@@ -1,3 +1,4 @@
+
 package com.example.longkathon.post.dto;
 
 import com.example.longkathon.application.dto.AppResponse;
@@ -19,7 +20,7 @@ public class PostResponse {
     private String img;
     private Long selectCard;
     private String createTime; // 문자열 형식의 생성 시간
+    private Long ownerId; // 방장 ID
 
     private List<AppResponse> applicants;
-
 }

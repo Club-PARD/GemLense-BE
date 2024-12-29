@@ -1,9 +1,7 @@
 package com.example.longkathon.user.service;
 
-import com.example.longkathon.card.entity.Card;
 import com.example.longkathon.landUser.entity.LandUser;
 import com.example.longkathon.landUser.repository.LandUserRepository;
-import com.example.longkathon.user.dto.UserRequest;
 import com.example.longkathon.user.dto.UserResponse;
 import com.example.longkathon.user.entity.User;
 import com.example.longkathon.user.repository.UserRepository;
@@ -17,18 +15,21 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final LandUserRepository landUserRepository;
 
+    // 구글 로그인 사용자 저장 또는 업데이트
     @Transactional
-    public void saveNameAndEmail(UserRequest.UserNameEmailRequest req) {
-        User user = User.builder()
-                .name(req.getName())
-                .email(req.getEmail())
-                .build();
-        userRepository.save(user);
+    public User saveOrUpdateGoogleUser(String email, String name) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> userRepository.save(User.builder()
+                        .email(email)
+                        .name(name)
+                        .build()));
     }
 
+    // 특정 유저 정보 조회
     @Transactional
     public UserResponse.ReadUser getUser(Long userId) {
         User user = userRepository.findById(userId)
@@ -40,6 +41,7 @@ public class UserService {
                 .build();
     }
 
+    // 특정 유저가 속한 Land 정보 조회
     @Transactional
     public List<UserResponse.LandInfoResponse> getLandsByUserId(Long userId) {
         User user = userRepository.findById(userId)
@@ -55,5 +57,4 @@ public class UserService {
                         .build())
                 .collect(Collectors.toList());
     }
-
 }

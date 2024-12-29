@@ -15,11 +15,11 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/name-email")
-    public ResponseEntity<Void> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
-        userService.saveNameAndEmail(req);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/name-email")
+//    public ResponseEntity<Void> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
+//        userService.saveNameAndEmail(req);
+//        return ResponseEntity.ok().build();
+//    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse.ReadUser> getUser(@PathVariable Long userId) {
@@ -32,5 +32,4 @@ public class UserController {
         List<UserResponse.LandInfoResponse> response = userService.getLandsByUserId(userId);
         return ResponseEntity.ok(response);
     }
-
 }

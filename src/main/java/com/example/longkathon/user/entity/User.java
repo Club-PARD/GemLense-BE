@@ -1,3 +1,4 @@
+
 package com.example.longkathon.user.entity;
 
 import com.example.longkathon.application.entity.App;
@@ -23,14 +24,14 @@ public class User {
     private Long userId;
 
     private String name;
-    private String email;;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Card> cards = new ArrayList<>();
+    private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LandUser> landUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Card card;
 }

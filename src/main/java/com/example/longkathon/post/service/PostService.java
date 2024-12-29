@@ -1,5 +1,5 @@
-package com.example.longkathon.post.service;
 
+package com.example.longkathon.post.service;
 
 import com.example.longkathon.application.dto.AppResponse;
 import com.example.longkathon.application.entity.App;
@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -24,7 +25,7 @@ public class PostService {
     private final AppRepository appRepository; // 추가
 
     @Transactional
-    public Long createPost(PostRequest postRequest) {
+    public Long createPost(Long ownerId, PostRequest postRequest) {
         Post post = Post.builder()
                 .title(postRequest.getTitle())
                 .category(postRequest.getCategory())
@@ -34,6 +35,7 @@ public class PostService {
                 .memo(postRequest.getMemo())
                 .img(postRequest.getImg())
                 .selectCard(postRequest.getSelectCard())
+                .ownerId(ownerId) // 방장 ID 설정
                 .createTime(LocalDateTime.now())
                 .build();
 
@@ -55,6 +57,7 @@ public class PostService {
                         .memo(post.getMemo())
                         .img(post.getImg())
                         .selectCard(post.getSelectCard())
+                        .ownerId(post.getOwnerId()) // 방장 ID 포함
                         .createTime(post.getCreateTime().format(formatter))
                         .build())
                 .collect(Collectors.toList());
@@ -76,6 +79,7 @@ public class PostService {
                 .memo(post.getMemo())
                 .img(post.getImg())
                 .selectCard(post.getSelectCard())
+                .ownerId(post.getOwnerId()) // 방장 ID 포함
                 .createTime(post.getCreateTime().format(formatter))
                 .build();
     }
@@ -99,6 +103,7 @@ public class PostService {
                 .memo(post.getMemo())
                 .img(post.getImg())
                 .selectCard(post.getSelectCard())
+                .ownerId(post.getOwnerId()) // 방장 ID 포함
                 .createTime(post.getCreateTime().format(formatter))
                 .applicants(applications.stream()
                         .map(app -> AppResponse.builder()

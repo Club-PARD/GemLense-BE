@@ -1,6 +1,5 @@
 package com.example.longkathon.post.controller;
 
-
 import com.example.longkathon.post.dto.PostRequest;
 import com.example.longkathon.post.dto.PostResponse;
 import com.example.longkathon.post.service.PostService;
@@ -17,9 +16,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("")
-    public ResponseEntity<Long> createPost(@RequestBody PostRequest postRequest) {
-        Long postId = postService.createPost(postRequest);
+    @PostMapping("/{userId}")
+    public ResponseEntity<Long> createPost(@PathVariable Long userId, @RequestBody PostRequest postRequest) {
+        Long postId = postService.createPost(userId, postRequest);
         return ResponseEntity.ok(postId);
     }
 

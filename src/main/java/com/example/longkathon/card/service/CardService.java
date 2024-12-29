@@ -89,11 +89,10 @@ public class CardService {
                         .build())
                 .collect(Collectors.toList());
     }
-
     @Transactional
-    public void updateCard(Long cardId, CardRequest.UpdateCardRequest req) {
-        Card card = cardRepository.findById(cardId)
-                .orElseThrow(() -> new IllegalArgumentException("Card not found with ID: " + cardId));
+    public void updateCard(Long userId, CardRequest.UpdateCardRequest req) {
+        Card card = cardRepository.findByUser_UserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Card not found for User with ID: " + userId));
 
         if (req.getCardName() != null) card.setName(req.getCardName());
         if (req.getGender() != null) card.setGender(req.getGender());
@@ -117,8 +116,10 @@ public class CardService {
         if (req.getAwards() != null) card.setAwards(req.getAwards());
         if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
-        if (req.getUrl() != null) card.setUrl(req.getUrl()); // 수정: URL 업데이트
+        if (req.getUrl() != null) card.setUrl(req.getUrl());
 
         cardRepository.save(card);
     }
+
+
 }

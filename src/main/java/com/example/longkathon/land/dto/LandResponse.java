@@ -28,5 +28,6 @@ public class LandResponse {
         private String name;
         private String email;
         private String role; // "owner" or "member"
+        private Integer num;
     }
 }
