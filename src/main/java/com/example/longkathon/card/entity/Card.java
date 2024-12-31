@@ -80,11 +80,6 @@ public class Card {
 
     private String important;
 
-    @ElementCollection
-    @CollectionTable(name = "card_goal", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "goal_value")
-    @Builder.Default
-    private List<String> goal = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "card_certificates", joinColumns = @JoinColumn(name = "card_id"))
@@ -110,11 +105,7 @@ public class Card {
     @Builder.Default
     private List<String> portfolio = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "card_additional_info", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "additional_info_value")
-    @Builder.Default
-    private List<String> additionalInfo = new ArrayList<>();
+    private String additionalInfo;
 
     @ElementCollection
     @CollectionTable(name = "card_url", joinColumns = @JoinColumn(name = "card_id"))

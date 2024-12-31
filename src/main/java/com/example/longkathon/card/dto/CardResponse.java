@@ -28,12 +28,11 @@ public class CardResponse {
     private List<String> timePreference;
     private List<String> restPreference;
     private List<String> friendship;
-    private List<String> goal;
     private String important;
     private List<String> certificates;
     private List<String> tools;
     private List<String> awards;
     private List<String> portfolio;
-    private List<String> additionalInfo;
+    private String additionalInfo;
     private List<String> url;
 }

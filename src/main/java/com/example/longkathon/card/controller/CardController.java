@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000") // 클라이언트 주소 설정
 @RestController
 @RequestMapping("/card")
 @RequiredArgsConstructor

@@ -29,13 +29,12 @@ public class CardRequest {
         private List<String> timePreference;
         private List<String> restPreference;
         private List<String> friendship; // 수정: String -> List<String>
-        private List<String> goal; // 수정: String -> List<String>
         private String important;
         private List<String> certificates; // 수정: String -> List<String>
         private List<String> tools; // 수정: String -> List<String>
         private List<String> awards; // 수정: String -> List<String>
         private List<String> portfolio; // 수정: String -> List<String>
-        private List<String> additionalInfo; // 수정: String -> List<String>
+        private String additionalInfo; // 수정: String -> List<String>
         private List<String> url; // 수정: String -> List<String>
     }
 
@@ -59,13 +58,12 @@ public class CardRequest {
         private List<String> timePreference;
         private List<String> restPreference;
         private List<String> friendship;
-        private List<String> goal; // 수정: String -> List<String>
         private String important;
         private List<String> certificates; // 수정: String -> List<String>
         private List<String> tools; // 수정: String -> List<String>
         private List<String> awards; // 수정: String -> List<String>
         private List<String> portfolio; // 수정: String -> List<String>
-        private List<String> additionalInfo; // 수정: String -> List<String>
+        private String additionalInfo; // 수정: String -> List<String>
         private List<String> url; // 수정: String -> List<String>
     }
 }

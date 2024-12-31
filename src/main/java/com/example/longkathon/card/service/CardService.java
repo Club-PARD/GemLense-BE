@@ -47,13 +47,12 @@ public class CardService {
                 .timePreference(Optional.ofNullable(req.getTimePreference()).orElseGet(ArrayList::new))
                 .restPreference(Optional.ofNullable(req.getRestPreference()).orElseGet(ArrayList::new))
                 .friendship(Optional.ofNullable(req.getFriendship()).orElseGet(ArrayList::new))
-                .goal(Optional.ofNullable(req.getGoal()).orElseGet(ArrayList::new))
                 .important(req.getImportant())
                 .certificates(Optional.ofNullable(req.getCertificates()).orElseGet(ArrayList::new))
                 .tools(Optional.ofNullable(req.getTools()).orElseGet(ArrayList::new))
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
-                .additionalInfo(Optional.ofNullable(req.getAdditionalInfo()).orElseGet(ArrayList::new))
+                .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
                 .user(user)
                 .build();
@@ -110,7 +109,6 @@ public class CardService {
                         .timePreference(card.getTimePreference())
                         .restPreference(card.getRestPreference())
                         .friendship(card.getFriendship())
-                        .goal(card.getGoal())
                         .important(card.getImportant())
                         .certificates(card.getCertificates())
                         .tools(card.getTools())
@@ -142,7 +140,6 @@ public class CardService {
         if (req.getTimePreference() != null) card.setTimePreference(req.getTimePreference());
         if (req.getRestPreference() != null) card.setRestPreference(req.getRestPreference());
         if (req.getFriendship() != null) card.setFriendship(req.getFriendship());
-        if (req.getGoal() != null) card.setGoal(req.getGoal());
         if (req.getImportant() != null) card.setImportant(req.getImportant());
         if (req.getCertificates() != null) card.setCertificates(req.getCertificates());
         if (req.getTools() != null) card.setTools(req.getTools());
