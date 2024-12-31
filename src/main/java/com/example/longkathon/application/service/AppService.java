@@ -76,4 +76,6 @@ public class AppService {
     public List<App> getApprovedApplications(Long postId) {
         return appRepository.findByPostIdAndStatus(postId, "APPROVED");
     }
+
+
 }
