@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
@@ -146,12 +147,57 @@ public class LandService {
                     .user(app.getUser())
                     .role("member")
                     .sequence(sequence++)
-                    .num(num++) // num 값 순차 증가
+                    .num(num++)
                     .build();
             landUserRepository.save(memberLandUser);
         }
 
         return savedLand.getLandId();
+    }
+
+
+    @Transactional
+    public void updateLandMembers(Long landId, Long userId) {
+        Land land = landRepository.findById(landId)
+                .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
+
+        if (!land.getOwnerId().equals(userId)) {
+            throw new IllegalArgumentException("Only the owner can update the land members.");
+        }
+
+        // 기존 멤버 삭제 (리스트 비우기)
+        land.getLandUsers().clear();
+        landRepository.save(land); // 연관된 LandUser 삭제
+
+        // 새로운 멤버 추가
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Owner not found with ID: " + userId));
+        LandUser ownerLandUser = LandUser.builder()
+                .land(land)
+                .user(owner)
+                .role("owner")
+                .sequence(1)
+                .num(1)
+                .build();
+
+        List<LandUser> newMembers = new ArrayList<>();
+        newMembers.add(ownerLandUser);
+
+        List<App> approvedApplications = appRepository.findByPostIdAndStatus(land.getPost().getPostId(), "APPROVED");
+        final int[] num = {2};
+        approvedApplications.forEach(app -> {
+            User user = app.getUser();
+            LandUser member = LandUser.builder()
+                    .land(land)
+                    .user(user)
+                    .role("member")
+                    .sequence(num[0])
+                    .num(num[0]++)
+                    .build();
+            newMembers.add(member);
+        });
+
+        landUserRepository.saveAll(newMembers);
     }
 
 

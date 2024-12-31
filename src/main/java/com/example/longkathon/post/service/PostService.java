@@ -1,6 +1,6 @@
-
 package com.example.longkathon.post.service;
 
+import com.example.longkathon.S3Service;
 import com.example.longkathon.application.dto.AppResponse;
 import com.example.longkathon.application.entity.App;
 import com.example.longkathon.application.repository.AppRepository;
@@ -11,7 +11,9 @@ import com.example.longkathon.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,7 +24,8 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final AppRepository appRepository; // 추가
+    private final AppRepository appRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public Long createPost(Long ownerId, PostRequest postRequest) {
@@ -33,33 +36,43 @@ public class PostService {
                 .member(postRequest.getMember())
                 .url(postRequest.getUrl())
                 .memo(postRequest.getMemo())
-                .img(postRequest.getImg())
-                .selectCard(postRequest.getSelectCard())
-                .ownerId(ownerId) // 방장 ID 설정
+                .memo2(postRequest.getMemo2())
+                .ownerId(ownerId)
                 .createTime(LocalDateTime.now())
                 .build();
 
         return postRepository.save(post).getPostId();
     }
 
+    @Transactional
+    public Long createPostWithImage(Long ownerId, PostRequest postRequest, MultipartFile image) {
+        try {
+            String imageUrl = s3Service.upload(image, "post-images");
+
+            Post post = Post.builder()
+                    .title(postRequest.getTitle())
+                    .category(postRequest.getCategory())
+                    .date(postRequest.getDate())
+                    .member(postRequest.getMember())
+                    .url(imageUrl)
+                    .memo(postRequest.getMemo())
+                    .memo2(postRequest.getMemo2())
+                    .ownerId(ownerId)
+                    .createTime(LocalDateTime.now())
+                    .build();
+
+            return postRepository.save(post).getPostId();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image to S3", e);
+        }
+    }
+
+
     public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return posts.stream()
-                .map(post -> PostResponse.builder()
-                        .postId(post.getPostId())
-                        .title(post.getTitle())
-                        .category(post.getCategory())
-                        .date(post.getDate())
-                        .member(post.getMember())
-                        .url(post.getUrl())
-                        .memo(post.getMemo())
-                        .img(post.getImg())
-                        .selectCard(post.getSelectCard())
-                        .ownerId(post.getOwnerId()) // 방장 ID 포함
-                        .createTime(post.getCreateTime().format(formatter))
-                        .build())
+                .map(this::mapPostToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -67,31 +80,14 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        return PostResponse.builder()
-                .postId(post.getPostId())
-                .title(post.getTitle())
-                .category(post.getCategory())
-                .date(post.getDate())
-                .member(post.getMember())
-                .url(post.getUrl())
-                .memo(post.getMemo())
-                .img(post.getImg())
-                .selectCard(post.getSelectCard())
-                .ownerId(post.getOwnerId()) // 방장 ID 포함
-                .createTime(post.getCreateTime().format(formatter))
-                .build();
+        return mapPostToResponse(post);
     }
 
     public PostResponse getPostWithApplicants(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
 
-        // appRepository를 통해 데이터를 조회
         List<App> applications = appRepository.findByPost_PostId(postId);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         return PostResponse.builder()
                 .postId(post.getPostId())
@@ -101,10 +97,10 @@ public class PostService {
                 .member(post.getMember())
                 .url(post.getUrl())
                 .memo(post.getMemo())
-                .img(post.getImg())
-                .selectCard(post.getSelectCard())
-                .ownerId(post.getOwnerId()) // 방장 ID 포함
-                .createTime(post.getCreateTime().format(formatter))
+                .memo2(post.getMemo2())
+                .ownerId(post.getOwnerId())
+                .createTime(formatDateTime(post.getCreateTime()))
+                .approvedCount(countApprovedApplicants(post.getPostId()))
                 .applicants(applications.stream()
                         .map(app -> AppResponse.builder()
                                 .applicationId(app.getApplicationId())
@@ -119,19 +115,9 @@ public class PostService {
 
     public List<PostResponse> getPostsByOwner(Long userId) {
         List<Post> posts = postRepository.findByOwnerId(userId);
+
         return posts.stream()
-                .map(post -> PostResponse.builder()
-                        .postId(post.getPostId())
-                        .title(post.getTitle())
-                        .category(post.getCategory())
-                        .date(post.getDate())
-                        .member(post.getMember())
-                        .url(post.getUrl())
-                        .memo(post.getMemo())
-                        .img(post.getImg())
-                        .selectCard(post.getSelectCard())
-                        .ownerId(post.getOwnerId())
-                        .build())
+                .map(this::mapPostToResponse)
                 .collect(Collectors.toList());
     }
 
@@ -139,7 +125,32 @@ public class PostService {
         List<Post> posts = postRepository.findByApplications_User_UserId(userId);
 
         return posts.stream()
-                .map(PostResponse::fromAppliedPost) // 간단한 정보만 매핑
+                .map(this::mapPostToResponse)
                 .collect(Collectors.toList());
+    }
+
+    private PostResponse mapPostToResponse(Post post) {
+        return PostResponse.builder()
+                .postId(post.getPostId())
+                .title(post.getTitle())
+                .category(post.getCategory())
+                .date(post.getDate())
+                .member(post.getMember())
+                .url(post.getUrl())
+                .memo(post.getMemo())
+                .memo2(post.getMemo2())
+                .ownerId(post.getOwnerId())
+                .createTime(formatDateTime(post.getCreateTime()))
+                .approvedCount(countApprovedApplicants(post.getPostId()))
+                .build();
+    }
+
+    private String formatDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime != null ? dateTime.format(formatter) : null;
+    }
+
+    private long countApprovedApplicants(Long postId) {
+        return appRepository.countByPost_PostIdAndStatus(postId, "APPROVED");
     }
 }

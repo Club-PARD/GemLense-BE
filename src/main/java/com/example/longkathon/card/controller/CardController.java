@@ -6,7 +6,9 @@ import com.example.longkathon.card.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000") // 클라이언트 주소 설정
@@ -36,4 +38,14 @@ public class CardController {
         cardService.updateCard(userId, req);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/{userId}/with-file")
+    public ResponseEntity<Void> createCardWithFile(
+            @PathVariable Long userId,
+            @RequestPart CardRequest.CreateCardRequest req,
+            @RequestPart MultipartFile file) {
+        cardService.createCardWithFile(userId, req, file);
+        return ResponseEntity.ok().build();
+    }
+
 }

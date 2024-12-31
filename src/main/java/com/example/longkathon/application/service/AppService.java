@@ -23,6 +23,7 @@ public class AppService {
     private final PostRepository postRepository;
 
     // 신청 상태 처리 (postId와 userId로 찾기)
+
     @Transactional
     public void handleApplication(Long postId, Long userId, String status) {
         Post post = postRepository.findById(postId)
@@ -35,7 +36,6 @@ public class AppService {
         application.setStatus(status);
         appRepository.save(application);
     }
-
     // 사용자가 Post에 신청
     @Transactional
     public void applyToPost(Long userId, Long postId) {

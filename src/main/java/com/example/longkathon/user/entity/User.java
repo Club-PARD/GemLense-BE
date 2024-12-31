@@ -26,6 +26,7 @@ public class User {
     private String name;
     private String email;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LandUser> landUsers = new ArrayList<>();
 

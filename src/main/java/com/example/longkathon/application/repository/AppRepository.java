@@ -10,6 +10,11 @@ import java.util.Optional;
 
 public interface AppRepository extends JpaRepository<App, Long> {
 
+
+    @Query("SELECT COUNT(a) FROM App a WHERE a.post.postId = :postId AND a.status = :status")
+    long countByPost_PostIdAndStatus(@Param("postId") Long postId, @Param("status") String status);
+
+
     // postId와 userId로 Application 찾기
     Optional<App> findByPost_PostIdAndUser_UserId(Long postId, Long userId);
 
@@ -19,4 +24,6 @@ public interface AppRepository extends JpaRepository<App, Long> {
     // JPQL로 Post ID와 Status 기준으로 Application 조회 (승인된 사용자 찾기)
     @Query("SELECT a FROM App a WHERE a.post.postId = :postId AND a.status = :status")
     List<App> findByPostIdAndStatus(@Param("postId") Long postId, @Param("status") String status);
+
+
 }

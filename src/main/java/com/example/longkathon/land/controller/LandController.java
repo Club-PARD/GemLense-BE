@@ -1,5 +1,6 @@
 package com.example.longkathon.land.controller;
 
+import com.example.longkathon.land.dto.LandRequest;
 import com.example.longkathon.land.dto.LandResponse.LandUserResponse;
 import com.example.longkathon.land.service.LandService;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,8 @@ public class LandController {
     private final LandService landService;
 
     @PostMapping("/{postId}/create")
-    public ResponseEntity<Long> createLandFromPost(@PathVariable Long postId, @RequestParam Long ownerId) {
-        Long landId = landService.createLandFromPost(postId, ownerId);
+    public ResponseEntity<Long> createLandFromPost(@PathVariable Long postId, @RequestParam Long userId) {
+        Long landId = landService.createLandFromPost(postId, userId);
         return ResponseEntity.ok(landId);
     }
 
@@ -47,4 +48,14 @@ public class LandController {
         landService.addUrlName(landId, urlName);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/{landId}/update-members")
+    public ResponseEntity<Void> updateLandMembers(
+            @PathVariable Long landId,
+            @RequestParam Long userId) {
+
+        landService.updateLandMembers(landId, userId);
+        return ResponseEntity.ok().build();
+    }
 }
+

@@ -15,15 +15,20 @@ public class PostResponse {
     private String title;
     private String category;
     private String date; // 문자열 형식의 날짜
-    private String member;
+    private Long member;
     private String url;
     private String memo;
+    private String memo2;
     private String img;
-    private Long selectCard;
     private String createTime; // 문자열 형식의 생성 시간
     private Long ownerId; // 방장 ID
 
     private List<AppResponse> applicants;
+
+    private String imageUrl;
+
+    private Long approvedCount;
+
 
     // 특정 필드만 초기화하는 메서드 추가
     public static PostResponse fromAppliedPost(Post post) {

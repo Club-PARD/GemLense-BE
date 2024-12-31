@@ -1,8 +1,6 @@
-
 package com.example.longkathon.post.entity;
 
 import com.example.longkathon.application.entity.App;
-import com.example.longkathon.land.entity.Land;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,19 +25,22 @@ public class Post {
     private String title;
     private String category;
     private String date;
-    private String member;
+    private Long member;
     private String url;
     private String memo;
-    private String img;
-    private Long selectCard;
+    private String memo2;
     private LocalDateTime createTime;
-
-    @Column(name = "owner_id")
     private Long ownerId;
+
+    private String imageUrl;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
 
-    @OneToOne(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Land land;
+    public long getApprovedCount() {
+        return applications.stream()
+                .filter(app -> "APPROVED".equals(app.getStatus()))
+                .count();
+    }
+
 }

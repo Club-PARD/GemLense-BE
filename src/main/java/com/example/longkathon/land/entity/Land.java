@@ -32,14 +32,17 @@ public class Land {
 
     private LocalDateTime endDate;
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(name = "land_urlNameList", joinColumns = @JoinColumn(name = "land_id"))
     private List<String> urlNameList = new ArrayList<>();
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(name = "land_urlList", joinColumns = @JoinColumn(name = "land_id"))
     private List<String> urlList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "land", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LandUser> landUsers = new ArrayList<>();
 

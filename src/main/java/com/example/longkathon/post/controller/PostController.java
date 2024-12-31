@@ -6,6 +6,7 @@ import com.example.longkathon.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -50,5 +51,14 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> getPostsAppliedByUser(@PathVariable Long userId) {
         List<PostResponse> posts = postService.getPostsAppliedByUser(userId);
         return ResponseEntity.ok(posts);
+    }
+
+    @PostMapping("/{userId}/with-image")
+    public ResponseEntity<Long> createPostWithImage(
+            @PathVariable Long userId,
+            @RequestPart PostRequest postRequest,
+            @RequestPart MultipartFile image) {
+        Long postId = postService.createPostWithImage(userId, postRequest, image);
+        return ResponseEntity.ok(postId);
     }
 }

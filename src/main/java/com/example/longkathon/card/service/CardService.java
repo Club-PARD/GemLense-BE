@@ -1,5 +1,6 @@
 package com.example.longkathon.card.service;
 
+import com.example.longkathon.S3Service;
 import com.example.longkathon.card.dto.CardRequest;
 import com.example.longkathon.card.dto.CardResponse;
 import com.example.longkathon.card.entity.Card;
@@ -9,7 +10,9 @@ import com.example.longkathon.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +21,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CardService {
+
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
+    private final S3Service s3Service;
 
     @Transactional
     public void createCard(Long userId, CardRequest.CreateCardRequest req) {
@@ -49,12 +54,39 @@ public class CardService {
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
                 .additionalInfo(Optional.ofNullable(req.getAdditionalInfo()).orElseGet(ArrayList::new))
-                .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new)) // 수정: URL을 List로 매핑
+                .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
                 .user(user)
                 .build();
 
         cardRepository.save(card);
     }
+
+    @Transactional
+    public void createCardWithFile(Long userId, CardRequest.CreateCardRequest req, MultipartFile file) {
+        try {
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
+            String fileUrl = s3Service.upload(file, "card-files");
+
+            Card card = Card.builder()
+                    .name(req.getName())
+                    .gender(req.getGender())
+                    .identity(req.getIdentity())
+                    .major(req.getMajor())
+                    .age(req.getAge())
+                    .phone(req.getPhone())
+                    .email(req.getEmail())
+                    .url(List.of(fileUrl))
+                    .user(user)
+                    .build();
+
+            cardRepository.save(card);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload file to S3", e);
+        }
+    }
+
 
     public List<CardResponse> getCardsByUserId(Long userId) {
         User user = userRepository.findById(userId)
@@ -85,10 +117,11 @@ public class CardService {
                         .awards(card.getAwards())
                         .portfolio(card.getPortfolio())
                         .additionalInfo(card.getAdditionalInfo())
-                        .url(card.getUrl()) // 수정: URL을 List로 반환
+                        .url(card.getUrl())
                         .build())
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public void updateCard(Long userId, CardRequest.UpdateCardRequest req) {
         Card card = cardRepository.findByUser_UserId(userId)
@@ -120,6 +153,4 @@ public class CardService {
 
         cardRepository.save(card);
     }
-
-
 }

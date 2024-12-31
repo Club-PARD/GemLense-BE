@@ -123,4 +123,7 @@ public class Card {
     private List<String> url = new ArrayList<>();
 
     private Long num;
+
+    private String fileUrl;
+
 }
