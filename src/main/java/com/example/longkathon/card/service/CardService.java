@@ -50,7 +50,7 @@ public class CardService {
                 .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
-                .fileUrl(req.getAdditionalInfo())
+                .file(req.getFile())
                 .user(user)
                 .build();
 
@@ -86,6 +86,7 @@ public class CardService {
                         .portfolio(card.getPortfolio())
                         .additionalInfo(card.getAdditionalInfo())
                         .url(card.getUrl())
+                        .file(card.getFile())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -117,7 +118,7 @@ public class CardService {
         if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
-        if (req.getAdditionalInfo() != null) card.setFileUrl(req.getAdditionalInfo());
+        if (req.getAdditionalInfo() != null) card.setFile(req.getFile());
 
         cardRepository.save(card);
     }

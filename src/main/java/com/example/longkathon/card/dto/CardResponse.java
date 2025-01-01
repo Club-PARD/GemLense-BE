@@ -35,4 +35,5 @@ public class CardResponse {
     private List<String> portfolio;
     private String additionalInfo;
     private List<String> url;
+    private String file;
 }

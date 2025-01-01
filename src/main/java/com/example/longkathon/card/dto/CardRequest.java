@@ -28,14 +28,15 @@ public class CardRequest {
         private List<String> conflictResolution;
         private List<String> timePreference;
         private List<String> restPreference;
-        private List<String> friendship; // 수정: String -> List<String>
+        private List<String> friendship;
         private String important;
-        private List<String> certificates; // 수정: String -> List<String>
-        private List<String> tools; // 수정: String -> List<String>
-        private List<String> awards; // 수정: String -> List<String>
-        private List<String> portfolio; // 수정: String -> List<String>
-        private String additionalInfo; // 수정: String -> List<String>
-        private List<String> url; // 수정: String -> List<String>
+        private List<String> certificates;
+        private List<String> tools;
+        private List<String> awards;
+        private List<String> portfolio;
+        private String additionalInfo;
+        private List<String> url;
+        private String file;
     }
 
     @Getter
@@ -59,11 +60,12 @@ public class CardRequest {
         private List<String> restPreference;
         private List<String> friendship;
         private String important;
-        private List<String> certificates; // 수정: String -> List<String>
-        private List<String> tools; // 수정: String -> List<String>
-        private List<String> awards; // 수정: String -> List<String>
-        private List<String> portfolio; // 수정: String -> List<String>
-        private String additionalInfo; // 수정: String -> List<String>
-        private List<String> url; // 수정: String -> List<String>
+        private List<String> certificates;
+        private List<String> tools;
+        private List<String> awards;
+        private List<String> portfolio;
+        private String additionalInfo;
+        private List<String> url;
+        private String file;
     }
 }
