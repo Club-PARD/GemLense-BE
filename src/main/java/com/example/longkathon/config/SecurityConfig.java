@@ -44,9 +44,9 @@ public class SecurityConfig {
                             // 로그인 성공 후 로직 처리
                             boolean hasCardInfo = checkCardInfo(authentication.getName());
                             if (hasCardInfo) {
-                                response.sendRedirect("/home");
+                                response.sendRedirect("https://wecand.site/home");
                             } else {
-                                response.sendRedirect("/register/1");
+                                response.sendRedirect("https://wecand.site/register/1");
                             }
                         })
                 );
