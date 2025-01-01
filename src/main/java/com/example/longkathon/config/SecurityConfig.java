@@ -26,7 +26,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/oauth2/**", "/login", "/custom-login").permitAll() // 허용 경로 설정
+                        .requestMatchers("/oauth2/**", "/login", "/custom-login",
+                                "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 허용 경로 설정
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
                 .oauth2Login(oauth -> oauth
@@ -43,7 +44,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://wecand.shop")); // 허용할 도메인
+        configuration.setAllowedOrigins(List.of("http://localhost:3000","https://wecand.shop")); // 허용할 도메인
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowedHeaders(List.of("*")); // 허용할 헤더
         configuration.setAllowCredentials(true); // 쿠키 허용
