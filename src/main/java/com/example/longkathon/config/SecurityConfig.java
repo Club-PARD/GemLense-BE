@@ -40,15 +40,15 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(principalOauth2UserService)
                         )
-                        .successHandler((request, response, authentication) -> {
-                            // 로그인 성공 후 로직 처리
-                            boolean hasCardInfo = checkCardInfo(authentication.getName());
-                            if (hasCardInfo) {
-                                response.sendRedirect("https://wecand.site/home");
-                            } else {
-                                response.sendRedirect("https://wecand.site/register/1");
-                            }
-                        })
+//                        .successHandler((request, response, authentication) -> {
+//                            // 로그인 성공 후 로직 처리
+//                            boolean hasCardInfo = checkCardInfo(authentication.getName());
+//                            if (hasCardInfo) {
+//                                response.sendRedirect("https://wecand.site/home");
+//                            } else {
+//                                response.sendRedirect("https://wecand.site/register/1");
+//                            }
+//                        })
                 );
 
         return http.build();
