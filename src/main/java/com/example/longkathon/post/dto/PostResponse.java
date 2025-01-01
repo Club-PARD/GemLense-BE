@@ -24,8 +24,6 @@ public class PostResponse {
 
     private List<AppResponse> applicants;
 
-    private String imageUrl;
-
     private long approvedCount;   // 승인된 지원자 수
     private long totalApplicants; // 지원자 총 수
 

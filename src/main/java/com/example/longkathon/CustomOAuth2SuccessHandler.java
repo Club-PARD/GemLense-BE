@@ -1,5 +1,5 @@
 package com.example.longkathon;
-// CustomOAuth2SuccessHandler.java
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

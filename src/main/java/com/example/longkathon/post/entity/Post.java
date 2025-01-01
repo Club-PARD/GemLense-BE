@@ -31,8 +31,7 @@ public class Post {
     private String memo2;
     private LocalDateTime createTime;
     private Long ownerId;
-
-    private String imageUrl;
+    private String img;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;

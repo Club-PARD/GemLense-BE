@@ -33,23 +33,7 @@ public class PostService {
                 .url(postRequest.getUrl())
                 .memo(postRequest.getMemo())
                 .memo2(postRequest.getMemo2())
-                .ownerId(ownerId)
-                .createTime(LocalDateTime.now())
-                .build();
-
-        return postRepository.save(post).getPostId();
-    }
-
-    @Transactional
-    public Long createPostWithImage(Long ownerId, PostRequest postRequest) {
-        Post post = Post.builder()
-                .title(postRequest.getTitle())
-                .category(postRequest.getCategory())
-                .date(postRequest.getDate())
-                .member(postRequest.getMember())
-                .url(postRequest.getUrl()) // 이미지 URL도 일반 문자열처럼 처리
-                .memo(postRequest.getMemo())
-                .memo2(postRequest.getMemo2())
+                .img(postRequest.getImg())
                 .ownerId(ownerId)
                 .createTime(LocalDateTime.now())
                 .build();
