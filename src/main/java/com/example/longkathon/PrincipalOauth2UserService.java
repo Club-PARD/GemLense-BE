@@ -29,7 +29,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isEmpty()) {
-            User u = new User(null, name, email, null, null, null);
+            User u = new User(null, name, email, null, null, null, null);
             userRepository.save(u);
         }
         return super.loadUser(oAuth2UserRequest);

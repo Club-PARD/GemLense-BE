@@ -53,12 +53,4 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @PostMapping("/{userId}/with-image")
-    public ResponseEntity<Long> createPostWithImage(
-            @PathVariable Long userId,
-            @RequestPart PostRequest postRequest,
-            @RequestPart MultipartFile image) {
-        Long postId = postService.createPostWithImage(userId, postRequest, image);
-        return ResponseEntity.ok(postId);
-    }
 }

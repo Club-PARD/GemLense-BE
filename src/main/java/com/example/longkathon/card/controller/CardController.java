@@ -38,13 +38,4 @@ public class CardController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{userId}/with-file")
-    public ResponseEntity<Void> createCardWithFile(
-            @PathVariable Long userId,
-            @RequestPart CardRequest.CreateCardRequest req,
-            @RequestPart MultipartFile file) {
-        cardService.createCardWithFile(userId, req, file);
-        return ResponseEntity.ok().build();
-    }
-
 }

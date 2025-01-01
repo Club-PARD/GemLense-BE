@@ -25,6 +25,7 @@ public class User {
 
     private String name;
     private String email;
+    private String cardInfo;
 
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,6 +1,5 @@
 package com.example.longkathon.card.service;
 
-import com.example.longkathon.S3Service;
 import com.example.longkathon.card.dto.CardRequest;
 import com.example.longkathon.card.dto.CardResponse;
 import com.example.longkathon.card.entity.Card;
@@ -10,9 +9,7 @@ import com.example.longkathon.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +21,6 @@ public class CardService {
 
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
-    private final S3Service s3Service;
 
     @Transactional
     public void createCard(Long userId, CardRequest.CreateCardRequest req) {
@@ -54,38 +50,12 @@ public class CardService {
                 .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
+                .fileUrl(req.getAdditionalInfo())
                 .user(user)
                 .build();
 
         cardRepository.save(card);
     }
-
-    @Transactional
-    public void createCardWithFile(Long userId, CardRequest.CreateCardRequest req, MultipartFile file) {
-        try {
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
-
-            String fileUrl = s3Service.upload(file, "card-files");
-
-            Card card = Card.builder()
-                    .name(req.getName())
-                    .gender(req.getGender())
-                    .identity(req.getIdentity())
-                    .major(req.getMajor())
-                    .age(req.getAge())
-                    .phone(req.getPhone())
-                    .email(req.getEmail())
-                    .url(List.of(fileUrl))
-                    .user(user)
-                    .build();
-
-            cardRepository.save(card);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload file to S3", e);
-        }
-    }
-
 
     public List<CardResponse> getCardsByUserId(Long userId) {
         User user = userRepository.findById(userId)
@@ -147,6 +117,7 @@ public class CardService {
         if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
+        if (req.getAdditionalInfo() != null) card.setFileUrl(req.getAdditionalInfo());
 
         cardRepository.save(card);
     }

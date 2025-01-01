@@ -1,6 +1,5 @@
 package com.example.longkathon.post.service;
 
-import com.example.longkathon.S3Service;
 import com.example.longkathon.application.dto.AppResponse;
 import com.example.longkathon.application.entity.App;
 import com.example.longkathon.application.repository.AppRepository;
@@ -11,9 +10,7 @@ import com.example.longkathon.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -25,7 +22,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final AppRepository appRepository;
-    private final S3Service s3Service;
 
     @Transactional
     public Long createPost(Long ownerId, PostRequest postRequest) {
@@ -45,28 +41,21 @@ public class PostService {
     }
 
     @Transactional
-    public Long createPostWithImage(Long ownerId, PostRequest postRequest, MultipartFile image) {
-        try {
-            String imageUrl = s3Service.upload(image, "post-images");
+    public Long createPostWithImage(Long ownerId, PostRequest postRequest) {
+        Post post = Post.builder()
+                .title(postRequest.getTitle())
+                .category(postRequest.getCategory())
+                .date(postRequest.getDate())
+                .member(postRequest.getMember())
+                .url(postRequest.getUrl()) // 이미지 URL도 일반 문자열처럼 처리
+                .memo(postRequest.getMemo())
+                .memo2(postRequest.getMemo2())
+                .ownerId(ownerId)
+                .createTime(LocalDateTime.now())
+                .build();
 
-            Post post = Post.builder()
-                    .title(postRequest.getTitle())
-                    .category(postRequest.getCategory())
-                    .date(postRequest.getDate())
-                    .member(postRequest.getMember())
-                    .url(imageUrl)
-                    .memo(postRequest.getMemo())
-                    .memo2(postRequest.getMemo2())
-                    .ownerId(ownerId)
-                    .createTime(LocalDateTime.now())
-                    .build();
-
-            return postRepository.save(post).getPostId();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to upload image to S3", e);
-        }
+        return postRepository.save(post).getPostId();
     }
-
 
     public List<PostResponse> getAllPosts() {
         List<Post> posts = postRepository.findAll();
