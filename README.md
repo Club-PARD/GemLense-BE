@@ -42,10 +42,8 @@ AWS EC2
 |:---:|:---:|
 |Swagger1|Swagger2|
 
-- 기타<br>
+- 기타(Entity Table)<br>
 |![image](https://github.com/user-attachments/assets/ae2b8b67-c84a-423a-9dbe-bae12378ba2a)|
-|:---:|
-|Entity Table|
 
 끝!
 
