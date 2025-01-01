@@ -1,4 +1,3 @@
-
 package com.example.longkathon.post.dto;
 
 import com.example.longkathon.application.dto.AppResponse;
@@ -27,8 +26,8 @@ public class PostResponse {
 
     private String imageUrl;
 
-    private Long approvedCount;
-
+    private long approvedCount;   // 승인된 지원자 수
+    private long totalApplicants; // 지원자 총 수
 
     // 특정 필드만 초기화하는 메서드 추가
     public static PostResponse fromAppliedPost(Post post) {

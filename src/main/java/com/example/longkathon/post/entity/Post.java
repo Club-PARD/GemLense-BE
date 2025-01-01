@@ -43,4 +43,7 @@ public class Post {
                 .count();
     }
 
+    public long getTotalApplicants() {
+        return applications.size();
+    }
 }
