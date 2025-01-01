@@ -35,20 +35,18 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
                 .oauth2Login(oauth -> oauth
-                        .defaultSuccessUrl("/home", true) // 기본 성공 리다이렉트 경로
-                        .failureUrl("/login?error=true") // 실패 시 리다이렉트 경로
-                        .userInfoEndpoint(userInfo ->
-                                userInfo.userService(principalOauth2UserService)
-                        )
-//                        .successHandler((request, response, authentication) -> {
-//                            // 로그인 성공 후 로직 처리
-//                            boolean hasCardInfo = checkCardInfo(authentication.getName());
-//                            if (hasCardInfo) {
-//                                response.sendRedirect("https://wecand.site/home");
-//                            } else {
-//                                response.sendRedirect("https://wecand.site/register/1");
-//                            }
-//                        })
+                        .successHandler((request, response, authentication) -> {
+                            // 로그인 성공 후 사용자 정보 가져오기
+                            String username = authentication.getName();
+                            Long userId = userRepository.findByName(username)
+                                    .map(user -> user.getUserId())
+                                    .orElseThrow(() -> new IllegalStateException("User not found"));
+
+                            // 사용자 ID를 JSON으로 응답
+                            response.setContentType("application/json");
+                            response.setCharacterEncoding("UTF-8");
+                            response.getWriter().write("{\"userId\": " + userId + "}");
+                        })
                 );
 
         return http.build();
