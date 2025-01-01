@@ -31,7 +31,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth -> oauth
                         .defaultSuccessUrl("/home", true) // 성공 후 /home으로 리다이렉트
-                        .failureUrl("/custom-login?error=true") // 실패 시 리다이렉트 경로
+                        .failureUrl("/register/1add?error=true") // 실패 시 리다이렉트 경로
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(principalOauth2UserService)
                         )
