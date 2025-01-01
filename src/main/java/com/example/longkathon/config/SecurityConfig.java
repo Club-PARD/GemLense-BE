@@ -24,7 +24,6 @@ import java.util.List;
 public class SecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
-    private final CorsConfig corsConfig;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -32,7 +31,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 모든 요청 허용
+                        .requestMatchers("/oauth2/**", "/login").permitAll() // OAuth2 및 /login 경로 허용
+                        .anyRequest().authenticated() // 그 외 경로는 인증 필요
+                )
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/custom-login") // 사용자 정의 로그인 페이지 경로
+                        .defaultSuccessUrl("/home") // 성공 후 리다이렉션 경로
+                        .userInfoEndpoint(userInfo ->
+                                userInfo.userService(principalOauth2UserService)
+                        )
                 );
 
         return http.build();
@@ -42,29 +49,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://wecand.shop")); // 허용할 도메인
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 메서드
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드
         configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더 허용
         configuration.setAllowCredentials(true); // 쿠키 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-
-
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("https://wecand.shop")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
     }
 }
 
