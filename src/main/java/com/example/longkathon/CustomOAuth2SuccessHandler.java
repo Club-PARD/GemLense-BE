@@ -64,16 +64,18 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         userInfo.put("userId", userId);
         userInfo.put("userEmail", userEmail);
 
+
+        // 리다이렉트
+        String redirectUrl = "https://wecand.site/home";
+        response.sendRedirect(redirectUrl);
+
+
         // 리다이렉트 전에 쿠키 설정
         Cookie userIdCookie = new Cookie("userId", String.valueOf(userId));
         userIdCookie.setPath("/");
         userIdCookie.setHttpOnly(true); // 보안을 위해 HTTP Only 설정
         userIdCookie.setSecure(true); // HTTPS 사용 시 설정
         response.addCookie(userIdCookie);
-
-// 리다이렉트
-        String redirectUrl = "https://wecand.site/home";
-        response.sendRedirect(redirectUrl);
 
 //        // 응답 타입 설정 및 JSON 작성
 //        response.setContentType("application/json");
