@@ -56,7 +56,7 @@ public class SecurityConfig {
                 "https://wecand.site",     // 배포된 React 및 Swagger UI
                 "https://wecand.shop"      // 배포된 백엔드
         ));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // HTTP 메서드 허용
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // HTTP 메서드 허용
         configuration.setAllowedHeaders(List.of("*")); // 모든 헤더 허용
         configuration.addExposedHeader("Authorization"); // 인증 헤더 노출
         configuration.setAllowCredentials(true); // 인증 쿠키 허용
