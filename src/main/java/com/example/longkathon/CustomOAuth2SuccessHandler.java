@@ -68,7 +68,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         response.addCookie(userIdCookie);
 
         // 리다이렉트
-        String redirectUrl = "https://wecand.site/home";
+        String redirectUrl = "https://wecand.shop/login/callback";
         response.sendRedirect(redirectUrl);
     }
 }
