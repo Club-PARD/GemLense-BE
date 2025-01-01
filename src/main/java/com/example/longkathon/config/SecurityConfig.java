@@ -3,10 +3,13 @@ package com.example.longkathon.config;
 import com.example.longkathon.PrincipalOauth2UserService;
 import com.example.longkathon.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -15,10 +18,12 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
-    private final UserRepository userRepository;
+    @Autowired
+    private AuthenticationSuccessHandler customSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,11 +38,11 @@ public class SecurityConfig {
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
                 .oauth2Login(oauth -> oauth
-                        .defaultSuccessUrl("/home", true) // 기본 성공 리다이렉트 경로
                         .failureUrl("/login?error=true") // 실패 시 리다이렉트 경로
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(principalOauth2UserService)
                         )
+                        .successHandler(customSuccessHandler)
                 );
 
         return http.build();
