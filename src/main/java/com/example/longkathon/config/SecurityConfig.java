@@ -38,18 +38,6 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(principalOauth2UserService)
                         )
-                        .successHandler((request, response, authentication) -> {
-                            // 로그인 성공 후 사용자 정보 가져오기
-                            String username = authentication.getName();
-                            Long userId = userRepository.findByName(username)
-                                    .map(user -> user.getUserId())
-                                    .orElseThrow(() -> new IllegalStateException("User not found"));
-
-                            // 사용자 ID를 JSON으로 응답
-                            response.setContentType("application/json");
-                            response.setCharacterEncoding("UTF-8");
-                            response.getWriter().write("{\"userId\": " + userId + "}");
-                        })
                 );
 
         return http.build();
