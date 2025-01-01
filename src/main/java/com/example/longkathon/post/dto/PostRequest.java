@@ -6,7 +6,7 @@ import lombok.Data;
 public class PostRequest {
     private String title;
     private String category;
-    private String date; // 문자열 형식의 날짜
+    private String date;
     private Long member;
     private String url;
     private String memo;

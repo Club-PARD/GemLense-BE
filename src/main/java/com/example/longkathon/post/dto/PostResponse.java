@@ -27,13 +27,4 @@ public class PostResponse {
     private long approvedCount;   // 승인된 지원자 수
     private long totalApplicants; // 지원자 총 수
 
-    // 특정 필드만 초기화하는 메서드 추가
-    public static PostResponse fromAppliedPost(Post post) {
-        return PostResponse.builder()
-                .postId(post.getPostId())
-                .title(post.getTitle())
-                .category(post.getCategory())
-                .ownerId(post.getOwnerId())
-                .build();
-    }
 }
