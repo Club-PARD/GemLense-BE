@@ -30,7 +30,7 @@ public class UserController {
     public Map<String, String> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
         Map<String, String> userInfo = new HashMap<>();
         if (principal != null) {
-            userInfo.put("userId", principal.getAttribute("sub")); // 사용자 ID
+            userInfo.put("userName", principal.getAttribute("name")); // 사용자 ID
         } else {
             userInfo.put("error", "User not authenticated");
         }
