@@ -59,16 +59,26 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         // 사용자 ID 추출
         Long userId = user.getUserId();
 
-        // 쿠키 설정
-        Cookie userIdCookie = new Cookie("userId", String.valueOf(userId));
-        userIdCookie.setPath("/");
-        userIdCookie.setHttpOnly(true); // 보안을 위해 HTTP Only 설정
-        userIdCookie.setSecure(true); // HTTPS 사용 시 설정
-        userIdCookie.setMaxAge(60 * 60 * 24); // 쿠키의 유효 기간 설정 (1일)
-        response.addCookie(userIdCookie);
+        String html = "<html><body>"
+                + "<script>"
+                + "window.localStorage.setItem('userId', '" + userId + "');"
+                + "window.location.href = 'https://wecand.site/home';"
+                + "</script>"
+                + "</body></html>";
 
-        // 리다이렉트
-        String redirectUrl = "https://wecand.shop/login/callback";
-        response.sendRedirect(redirectUrl);
+        response.setContentType("text/html");
+        response.getWriter().write(html);
+
+//        // 쿠키 설정
+//        Cookie userIdCookie = new Cookie("userId", String.valueOf(userId));
+//        userIdCookie.setPath("/");
+//        userIdCookie.setHttpOnly(true); // 보안을 위해 HTTP Only 설정
+//        userIdCookie.setSecure(true); // HTTPS 사용 시 설정
+//        userIdCookie.setMaxAge(60 * 60 * 24); // 쿠키의 유효 기간 설정 (1일)
+//        response.addCookie(userIdCookie);
+
+//        // 리다이렉트
+//        String redirectUrl = "https://wecand.shop/login/callback";
+//        response.sendRedirect(redirectUrl);
     }
 }
