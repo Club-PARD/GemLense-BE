@@ -5,9 +5,13 @@ import com.example.longkathon.user.dto.UserResponse;
 import com.example.longkathon.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -21,6 +25,17 @@ public class UserController {
 //        userService.saveNameAndEmail(req);
 //        return ResponseEntity.ok().build();
 //    }
+
+    @GetMapping("/user")
+    public Map<String, String> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
+        Map<String, String> userInfo = new HashMap<>();
+        if (principal != null) {
+            userInfo.put("userId", principal.getAttribute("sub")); // 사용자 ID
+        } else {
+            userInfo.put("error", "User not authenticated");
+        }
+        return userInfo;
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse.ReadUser> getUser(@PathVariable Long userId) {
