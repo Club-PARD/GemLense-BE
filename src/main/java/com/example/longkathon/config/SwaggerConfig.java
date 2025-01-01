@@ -14,13 +14,14 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
+    @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
                 .version("1.0.0")
                 .title("Wecand API")
                 .description("Wecand API Documentation");
         Server server = new Server();
-        server.setUrl("https://wecand.shop"); // https://에 접근 가능하게 설정
+        server.setUrl("https://wecand.shop"); // HTTPS URL 설정
 
         return new OpenAPI()
                 .info(info)
