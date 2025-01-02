@@ -25,4 +25,6 @@ public class UserResponse {
         private String landName;
         private String role; // "owner" or "member"
     }
+
+
 }

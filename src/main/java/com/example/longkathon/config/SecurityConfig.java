@@ -37,7 +37,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "https://nanoplan.store",
+                "https://wecand.shop",
                 "https://wecand.shop/swagger-ui",
                 "https://wecand.shop/swagger-ui/index.html"
         ));

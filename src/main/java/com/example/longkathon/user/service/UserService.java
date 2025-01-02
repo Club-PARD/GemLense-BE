@@ -30,6 +30,13 @@ public class UserService {
                         .build()));
     }
 
+    @Transactional
+    public Long getUserIdByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(User::getUserId)
+                .orElse(null);
+    }
+
     public void saveNameAndEmail(UserRequest.UserNameEmailRequest req) {
         // 유효성 검사 (예: null 체크, 이메일 형식 확인 등)
         if (req.getName() == null || req.getEmail() == null) {
