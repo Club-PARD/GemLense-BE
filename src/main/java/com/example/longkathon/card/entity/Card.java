@@ -101,11 +101,7 @@ public class Card {
 
     private String additionalInfo;
 
-    @ElementCollection
-    @CollectionTable(name = "card_url", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "url_value")
-    @Builder.Default
-    private List<String> url = new ArrayList<>();
+    private String url;
 
     private String fileUrl;
 

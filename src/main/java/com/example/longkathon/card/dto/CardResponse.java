@@ -33,6 +33,6 @@ public class CardResponse {
     private List<String> tools;
     private List<String> awards;
     private String additionalInfo;
-    private List<String> url;
+    private String url;
     private String fileUrl;
 }
