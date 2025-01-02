@@ -1,5 +1,6 @@
 package com.example.longkathon.user.service;
 
+import com.example.longkathon.application.repository.AppRepository;
 import com.example.longkathon.landUser.entity.LandUser;
 import com.example.longkathon.landUser.repository.LandUserRepository;
 import com.example.longkathon.user.dto.UserRequest;
@@ -19,16 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final LandUserRepository landUserRepository;
-
-    // 구글 로그인 사용자 저장 또는 업데이트
-    @Transactional
-    public User saveOrUpdateGoogleUser(String email, String name) {
-        return userRepository.findByEmail(email)
-                .orElseGet(() -> userRepository.save(User.builder()
-                        .email(email)
-                        .name(name)
-                        .build()));
-    }
+    private final AppRepository appRepository;
 
     @Transactional
     public Long getUserIdByEmail(String email) {
@@ -67,7 +59,6 @@ public class UserService {
                 .build();
     }
 
-    // 특정 유저가 속한 Land 정보 조회
     @Transactional
     public List<UserResponse.LandInfoResponse> getLandsByUserId(Long userId) {
         User user = userRepository.findById(userId)
@@ -76,11 +67,20 @@ public class UserService {
         List<LandUser> landUsers = landUserRepository.findByUser(user);
 
         return landUsers.stream()
-                .map(landUser -> UserResponse.LandInfoResponse.builder()
-                        .landId(landUser.getLand().getLandId())
-                        .landName(landUser.getLand().getLandName())
-                        .role(landUser.getRole())
-                        .build())
+                .map(landUser -> {
+                    Long landId = landUser.getLand().getLandId();
+                    long approvedApplicantsCount = countApprovedApplicants(landId); // 승인된 지원자 수 가져오기
+                    return UserResponse.LandInfoResponse.builder()
+                            .landId(landId)
+                            .landName(landUser.getLand().getLandName())
+                            .role(landUser.getRole())
+                            .approvedApplicants(approvedApplicantsCount) // 응답 객체에 추가
+                            .build();
+                })
                 .collect(Collectors.toList());
+    }
+
+    private long countApprovedApplicants(Long landId) {
+        return appRepository.countByPost_PostIdAndStatus(landId, "APPROVED");
     }
 }

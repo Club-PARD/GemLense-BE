@@ -23,7 +23,9 @@ public class UserResponse {
     public static class LandInfoResponse {
         private Long landId;
         private String landName;
-        private String role; // "owner" or "member"
+        private String role;
+        private long approvedApplicants;
+
     }
 
 
