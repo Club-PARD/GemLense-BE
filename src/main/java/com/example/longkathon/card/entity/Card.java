@@ -107,6 +107,6 @@ public class Card {
     @Builder.Default
     private List<String> url = new ArrayList<>();
 
-    private String file;
+    private String fileUrl;
 
 }

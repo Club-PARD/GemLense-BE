@@ -49,7 +49,7 @@ public class CardService {
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
-                .file(req.getFile())
+                .fileUrl(req.getFileUrl())
                 .user(user)
                 .build();
 
@@ -84,7 +84,7 @@ public class CardService {
                         .awards(card.getAwards())
                         .additionalInfo(card.getAdditionalInfo())
                         .url(card.getUrl())
-                        .file(card.getFile())
+                        .fileUrl(card.getFileUrl())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -115,7 +115,7 @@ public class CardService {
         if (req.getAwards() != null) card.setAwards(req.getAwards());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
-        if (req.getAdditionalInfo() != null) card.setFile(req.getFile());
+        if (req.getAdditionalInfo() != null) card.setFileUrl(req.getFileUrl());
 
         cardRepository.save(card);
     }

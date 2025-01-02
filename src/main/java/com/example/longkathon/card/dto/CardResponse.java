@@ -34,5 +34,5 @@ public class CardResponse {
     private List<String> awards;
     private String additionalInfo;
     private List<String> url;
-    private String file;
+    private String fileUrl;
 }
