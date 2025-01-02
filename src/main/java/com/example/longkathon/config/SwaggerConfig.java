@@ -18,16 +18,13 @@ public class  SwaggerConfig {
                 .version("1.0.0")
                 .description("Wecand API Documentation");
 
-        Server localServer = new Server()
-                .url("http://localhost:8080")
-                .description("Local server");
-
         Server prodServer = new Server()
                 .url("https://wecand.shop")
                 .description("Production server");
 
         return new OpenAPI()
                 .info(info)
-                .servers(List.of(localServer, prodServer));
+                .servers(List.of(prodServer));
     }
+
 }
