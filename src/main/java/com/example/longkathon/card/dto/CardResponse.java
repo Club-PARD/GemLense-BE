@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CardResponse {
     private Long cardId;
-    private String name;
+    private String cardName;
     private String gender;
     private String identity;
     private String major;

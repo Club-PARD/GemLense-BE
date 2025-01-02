@@ -22,7 +22,7 @@ public class Card {
     @JoinColumn(name = "user_id", nullable = false, unique = true) // unique 추가
     private User user;
 
-    private String name;
+    private String cardName;
     private String gender;
     private String identity;
     private String major;

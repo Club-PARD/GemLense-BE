@@ -28,7 +28,7 @@ public class CardService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
         Card card = Card.builder()
-                .name(req.getName())
+                .cardName(req.getCardName())
                 .gender(req.getGender())
                 .identity(req.getIdentity())
                 .major(req.getMajor())
@@ -63,7 +63,7 @@ public class CardService {
         return cardRepository.findByUser(user).stream()
                 .map(card -> CardResponse.builder()
                         .cardId(card.getCardId())
-                        .name(card.getName())
+                        .cardName(card.getCardName())
                         .gender(card.getGender())
                         .identity(card.getIdentity())
                         .major(card.getMajor())
@@ -94,7 +94,7 @@ public class CardService {
         Card card = cardRepository.findByUser_UserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found for User with ID: " + userId));
 
-        if (req.getCardName() != null) card.setName(req.getCardName());
+        if (req.getCardName() != null) card.setCardName(req.getCardName());
         if (req.getGender() != null) card.setGender(req.getGender());
         if (req.getIdentity() != null) card.setIdentity(req.getIdentity());
         if (req.getMajor() != null) card.setMajor(req.getMajor());

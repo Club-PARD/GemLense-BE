@@ -14,7 +14,7 @@ public class CardRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateCardRequest {
-        private String name;
+        private String cardName;
         private String gender;
         private String identity;
         private String major;
