@@ -24,7 +24,7 @@ public class UserResponse {
         private Long landId;
         private String landName;
         private String role;
-        private long approvedApplicants;
+        private long countMember;
 
     }
 

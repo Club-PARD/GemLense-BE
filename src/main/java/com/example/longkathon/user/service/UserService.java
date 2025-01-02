@@ -69,12 +69,12 @@ public class UserService {
         return landUsers.stream()
                 .map(landUser -> {
                     Long landId = landUser.getLand().getLandId();
-                    long approvedApplicantsCount = countApprovedApplicants(landId); // 승인된 지원자 수 가져오기
+                    long countMember = countApprovedApplicants(landId) + 1; // 승인된 지원자 수에 1을 더함
                     return UserResponse.LandInfoResponse.builder()
                             .landId(landId)
                             .landName(landUser.getLand().getLandName())
                             .role(landUser.getRole())
-                            .approvedApplicants(approvedApplicantsCount) // 응답 객체에 추가
+                            .countMember(countMember) // 응답 객체에 countMember 추가
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -83,4 +83,5 @@ public class UserService {
     private long countApprovedApplicants(Long landId) {
         return appRepository.countByPost_PostIdAndStatus(landId, "APPROVED");
     }
+
 }
