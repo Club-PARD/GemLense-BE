@@ -35,7 +35,7 @@ public class CardRequest {
         private List<String> awards;
         private String additionalInfo;
         private List<String> url;
-        private String file;
+        private String fileUrl;
     }
 
     @Getter
@@ -65,6 +65,6 @@ public class CardRequest {
         private List<String> portfolio;
         private String additionalInfo;
         private List<String> url;
-        private String file;
+        private String fileUrl;
     }
 }
