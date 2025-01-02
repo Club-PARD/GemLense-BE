@@ -2,6 +2,7 @@ package com.example.longkathon.user.service;
 
 import com.example.longkathon.landUser.entity.LandUser;
 import com.example.longkathon.landUser.repository.LandUserRepository;
+import com.example.longkathon.user.dto.UserRequest;
 import com.example.longkathon.user.dto.UserResponse;
 import com.example.longkathon.user.entity.User;
 import com.example.longkathon.user.repository.UserRepository;
@@ -27,6 +28,21 @@ public class UserService {
                         .email(email)
                         .name(name)
                         .build()));
+    }
+
+    public void saveNameAndEmail(UserRequest.UserNameEmailRequest req) {
+        // 유효성 검사 (예: null 체크, 이메일 형식 확인 등)
+        if (req.getName() == null || req.getEmail() == null) {
+            throw new IllegalArgumentException("Name or email cannot be null");
+        }
+
+        // User 엔티티 생성 및 저장
+        User user = User.builder()
+                .name(req.getName())
+                .email(req.getEmail())
+                .build();
+
+        userRepository.save(user);
     }
 
     // 특정 유저 정보 조회

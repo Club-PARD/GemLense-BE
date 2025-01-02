@@ -5,8 +5,8 @@ import com.example.longkathon.user.dto.UserResponse;
 import com.example.longkathon.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,22 +20,22 @@ import java.util.Map;
 public class UserController {
     private final UserService userService;
 
-//    @PostMapping("/name-email")
-//    public ResponseEntity<Void> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
-//        userService.saveNameAndEmail(req);
-//        return ResponseEntity.ok().build();
-//    }
-
-    @GetMapping("/user")
-    public Map<String, String> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
-        Map<String, String> userInfo = new HashMap<>();
-        if (principal != null) {
-            userInfo.put("userName", principal.getAttribute("name")); // 사용자 ID
-        } else {
-            userInfo.put("error", "User not authenticated");
-        }
-        return userInfo;
+    @PostMapping("/name-email")
+    public ResponseEntity<Void> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
+        userService.saveNameAndEmail(req);
+        return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/user")
+//    public Map<String, String> getUserInfo(@AuthenticationPrincipal OAuth2User principal) {
+//        Map<String, String> userInfo = new HashMap<>();
+//        if (principal != null) {
+//            userInfo.put("userName", principal.getAttribute("name")); // 사용자 ID
+//        } else {
+//            userInfo.put("error", "User not authenticated");
+//        }
+//        return userInfo;
+//    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse.ReadUser> getUser(@PathVariable Long userId) {

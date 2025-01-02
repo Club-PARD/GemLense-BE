@@ -49,4 +49,8 @@ public class Land {
     @OneToOne
     @JoinColumn(name = "post_id", unique = true, nullable = false) // 1대1 관계 설정
     private Post post;
+
+    public void updateCurrentMember() {
+        this.currentMember = landUsers.size();
+    }
 }
