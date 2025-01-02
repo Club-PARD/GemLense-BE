@@ -20,11 +20,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure()) // HTTPS 강제
+                .requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure() // 모든 요청을 HTTPS로 강제
+                )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**", "/v3/api-docs/**", "/home", "/recruiting", "/detail/**" // 인증 없이 접근 가능한 경로
-                        ).permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger는 인증 없이 허용
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 );
 
@@ -35,8 +35,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",   // 로컬 React
-                "https://wecand.site",     // 배포된 React 및 Swagger UI
+                "http://localhost:3000",
                 "https://wecand.shop"      // 배포된 백엔드
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // HTTP 메서드 허용
