@@ -39,7 +39,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList(
                 "https://wecand.shop",
                 "https://wecand.shop/swagger-ui",
-                "https://wecand.shop/swagger-ui/index.html"
+                "https://wecand.shop/swagger-ui/index.html",
+                "http://localhost:3000"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
