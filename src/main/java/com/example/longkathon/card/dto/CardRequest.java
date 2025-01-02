@@ -33,7 +33,6 @@ public class CardRequest {
         private List<String> certificates;
         private List<String> tools;
         private List<String> awards;
-        private List<String> portfolio;
         private String additionalInfo;
         private List<String> url;
         private String file;

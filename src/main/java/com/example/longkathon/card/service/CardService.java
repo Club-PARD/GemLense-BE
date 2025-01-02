@@ -47,7 +47,6 @@ public class CardService {
                 .certificates(Optional.ofNullable(req.getCertificates()).orElseGet(ArrayList::new))
                 .tools(Optional.ofNullable(req.getTools()).orElseGet(ArrayList::new))
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
-                .portfolio(Optional.ofNullable(req.getPortfolio()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
                 .file(req.getFile())
@@ -83,7 +82,6 @@ public class CardService {
                         .certificates(card.getCertificates())
                         .tools(card.getTools())
                         .awards(card.getAwards())
-                        .portfolio(card.getPortfolio())
                         .additionalInfo(card.getAdditionalInfo())
                         .url(card.getUrl())
                         .file(card.getFile())
@@ -115,7 +113,6 @@ public class CardService {
         if (req.getCertificates() != null) card.setCertificates(req.getCertificates());
         if (req.getTools() != null) card.setTools(req.getTools());
         if (req.getAwards() != null) card.setAwards(req.getAwards());
-        if (req.getPortfolio() != null) card.setPortfolio(req.getPortfolio());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
         if (req.getAdditionalInfo() != null) card.setFile(req.getFile());

@@ -99,12 +99,6 @@ public class Card {
     @Builder.Default
     private List<String> awards = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable(name = "card_portfolio", joinColumns = @JoinColumn(name = "card_id"))
-    @Column(name = "portfolio_value")
-    @Builder.Default
-    private List<String> portfolio = new ArrayList<>();
-
     private String additionalInfo;
 
     @ElementCollection
