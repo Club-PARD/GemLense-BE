@@ -21,10 +21,11 @@
         private final UserService userService;
 
         @PostMapping("/name-email")
-        public ResponseEntity<Void> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
-            userService.saveNameAndEmail(req);
-            return ResponseEntity.ok().build();
+        public ResponseEntity<Long> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
+            Long userId = userService.saveNameAndEmail(req);
+            return ResponseEntity.ok(userId);
         }
+
 
         @GetMapping("/email")
         public ResponseEntity<Long> getUserIdByEmail(@RequestParam String email) {

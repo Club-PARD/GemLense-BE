@@ -37,7 +37,8 @@ public class UserService {
                 .orElse(null);
     }
 
-    public void saveNameAndEmail(UserRequest.UserNameEmailRequest req) {
+    @Transactional
+    public Long saveNameAndEmail(UserRequest.UserNameEmailRequest req) {
         // 유효성 검사 (예: null 체크, 이메일 형식 확인 등)
         if (req.getName() == null || req.getEmail() == null) {
             throw new IllegalArgumentException("Name or email cannot be null");
@@ -49,8 +50,10 @@ public class UserService {
                 .email(req.getEmail())
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return savedUser.getUserId();
     }
+
 
     // 특정 유저 정보 조회
     @Transactional
