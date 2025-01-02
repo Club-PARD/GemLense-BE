@@ -1,3 +1,4 @@
+// src/main/java/com/example/longkathon/card/service/CardService.java
 package com.example.longkathon.card.service;
 
 import com.example.longkathon.card.dto.CardRequest;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,10 +24,32 @@ public class CardService {
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
 
+    // URL 검증 정규식
+    private static final Pattern URL_PATTERN = Pattern.compile(
+            "^(https?|ftp)://[\\w.-]+(?:\\.[\\w.-]+)+[/\\w\\-._~:/?#[\\]@!$&'()*+,;=]*$");
+
+    private boolean isValidUrl(String url) {
+        return URL_PATTERN.matcher(url).matches();
+    }
+
     @Transactional
     public void createCard(Long userId, CardRequest.CreateCardRequest req) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+
+        // file 필드 URL 검증
+        if (req.getFile() != null && !isValidUrl(req.getFile())) {
+            throw new IllegalArgumentException("Invalid file URL: " + req.getFile());
+        }
+
+        // url 필드 배열 검증
+        if (req.getUrl() != null) {
+            for (String url : req.getUrl()) {
+                if (!isValidUrl(url)) {
+                    throw new IllegalArgumentException("Invalid URL: " + url);
+                }
+            }
+        }
 
         Card card = Card.builder()
                 .cardName(req.getCardName())
@@ -49,7 +73,7 @@ public class CardService {
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
                 .url(Optional.ofNullable(req.getUrl()).orElseGet(ArrayList::new))
-                .fileUrl(req.getFileUrl())
+                .file(req.getFile()) // 변경된 부분
                 .user(user)
                 .build();
 
@@ -84,7 +108,7 @@ public class CardService {
                         .awards(card.getAwards())
                         .additionalInfo(card.getAdditionalInfo())
                         .url(card.getUrl())
-                        .fileUrl(card.getFileUrl())
+                        .file(card.getFile()) // 변경된 부분
                         .build())
                 .collect(Collectors.toList());
     }
@@ -115,7 +139,7 @@ public class CardService {
         if (req.getAwards() != null) card.setAwards(req.getAwards());
         if (req.getAdditionalInfo() != null) card.setAdditionalInfo(req.getAdditionalInfo());
         if (req.getUrl() != null) card.setUrl(req.getUrl());
-        if (req.getAdditionalInfo() != null) card.setFileUrl(req.getFileUrl());
+        if (req.getFile() != null) card.setFile(req.getFile()); // 변경된 부분
 
         cardRepository.save(card);
     }
