@@ -21,6 +21,7 @@ public class PostResponse {
     private String img;
     private String createTime; // 문자열 형식의 생성 시간
     private Long ownerId; // 방장 ID
+    private String ownerName;
 
     private List<AppResponse> applicants;
 

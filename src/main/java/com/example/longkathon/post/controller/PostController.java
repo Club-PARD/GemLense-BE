@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {"http://localhost:8080", "https://wecand.shop"})
 public class PostController {
 
     private final PostService postService;

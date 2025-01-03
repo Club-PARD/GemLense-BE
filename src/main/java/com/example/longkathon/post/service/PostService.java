@@ -7,6 +7,8 @@ import com.example.longkathon.post.dto.PostRequest;
 import com.example.longkathon.post.dto.PostResponse;
 import com.example.longkathon.post.entity.Post;
 import com.example.longkathon.post.repository.PostRepository;
+import com.example.longkathon.user.entity.User;
+import com.example.longkathon.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final AppRepository appRepository;
 
@@ -105,6 +108,11 @@ public class PostService {
     }
 
     private PostResponse mapPostToResponse(Post post) {
+        // User 엔티티에서 ownerName 가져오기
+        String ownerName = userRepository.findById(post.getOwnerId())
+                .map(User::getName) // User 엔티티의 name 필드
+                .orElse("Unknown");
+
         return PostResponse.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
@@ -116,9 +124,10 @@ public class PostService {
                 .memo2(post.getMemo2())
                 .img(post.getImg())
                 .ownerId(post.getOwnerId())
+                .ownerName(ownerName) // ownerName 설정
                 .createTime(formatDateTime(post.getCreateTime()))
                 .approvedCount(countApprovedApplicants(post.getPostId()))
-                .totalApplicants(post.getApplications().size()) // 지원자 총 수 추가
+                .totalApplicants(post.getApplications().size())
                 .build();
     }
 

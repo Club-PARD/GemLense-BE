@@ -16,7 +16,6 @@
     @RestController
     @RequestMapping("/user")
     @RequiredArgsConstructor
-    @CrossOrigin(origins = {"http://localhost:8080", "https://wecand.shop"})
     public class UserController {
         private final UserService userService;
 
