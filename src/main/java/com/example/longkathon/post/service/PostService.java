@@ -100,28 +100,20 @@ public class PostService {
     }
 
     public List<PostResponse> getPostsAppliedByUser(Long userId) {
-        List<Post> posts = postRepository.findByApplications_User_UserId(userId);
+        // 1) 유저가 지원한 App 목록을 전부 가져온다.
+        List<App> apps = appRepository.findByUser_UserId(userId);
 
-        return posts.stream()
-                .map(post -> {
-                    // 현재 사용자의 `App` 엔티티에서 `status` 가져오기
-                    String status = post.getApplications().stream()
-                            .filter(app -> app.getUser().getUserId().equals(userId))
-                            .map(App::getStatus)
-                            .findFirst()
-                            .orElse("UNKNOWN");
-
-                    // PostResponse 생성
-                    return PostResponse.builder()
-                            .postId(post.getPostId())
-                            .title(post.getTitle())
-                            .category(post.getCategory())
-                            .status(status) // status 설정
-                            .build();
-                })
+        // 2) 각 App에 연결된 Post와, 현재 App 상태(status)를 가져와서 PostResponse에 매핑한다.
+        return apps.stream()
+                .map(app -> PostResponse.builder()
+                        .postId(app.getPost().getPostId())
+                        .title(app.getPost().getTitle())
+                        .category(app.getPost().getCategory())
+                        // PostResponse에 있는 status 필드를 App의 상태로 채워준다.
+                        .status(app.getStatus())
+                        .build())
                 .collect(Collectors.toList());
     }
-
 
     private PostResponse mapPostToResponse(Post post) {
         // User 엔티티에서 ownerName 가져오기

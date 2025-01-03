@@ -20,5 +20,8 @@ public interface AppRepository extends JpaRepository<App, Long> {
     @Query("SELECT a FROM App a WHERE a.post.postId = :postId AND a.status = :status")
     List<App> findByPostIdAndStatus(@Param("postId") Long postId, @Param("status") String status);
 
+    List<App> findByUser_UserId(Long userId);
+
+
 
 }
