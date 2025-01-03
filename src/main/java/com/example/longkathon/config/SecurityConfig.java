@@ -40,6 +40,7 @@ public class SecurityConfig {
                 "https://wecand.shop",
                 "https://wecand.shop/swagger-ui",
                 "https://wecand.shop/swagger-ui/index.html",
+                "https://wecand.site",
                 "http://localhost:3000"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));

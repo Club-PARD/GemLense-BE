@@ -48,7 +48,7 @@ public class CardService {
                 .tools(Optional.ofNullable(req.getTools()).orElseGet(ArrayList::new))
                 .awards(Optional.ofNullable(req.getAwards()).orElseGet(ArrayList::new))
                 .additionalInfo(req.getAdditionalInfo())
-                .url(req.getUrl())
+                .url(req.getUrl()x)
                 .fileUrl(req.getFileUrl())
                 .user(user)
                 .build();
