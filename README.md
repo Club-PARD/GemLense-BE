@@ -47,7 +47,7 @@ AWS EC2
 
 - 기타(Entity Table)<br>
 
-|![image](https://github.com/user-attachments/assets/ae2b8b67-c84a-423a-9dbe-bae12378ba2a)|
+|![image](https://github.com/user-attachments/assets/c46bf65c-51b0-4c8d-8b81-f6c3bc425bc7))|
 |:---:|
 |ERD|
 
