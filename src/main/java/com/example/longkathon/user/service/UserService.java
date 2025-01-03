@@ -81,7 +81,7 @@ public class UserService {
     }
 
     private long countApprovedApplicants(Long landId) {
-        return appRepository.countByPost_PostIdAndStatus(landId, "{\"status\":\"수락\"}");
+        return appRepository.countByPost_PostIdAndStatus(landId, "APPROVED");
     }
 
 }

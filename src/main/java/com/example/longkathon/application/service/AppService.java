@@ -33,7 +33,8 @@ public class AppService {
         App application = appRepository.findByPost_PostIdAndUser_UserId(postId, userId)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found for the given post and user."));
 
-        application.setStatus(status);
+        String cleanedStatus = status.trim().replace("\"", "");
+        application.setStatus(cleanedStatus);
         appRepository.save(application);
     }
     // 사용자가 Post에 신청
@@ -74,7 +75,7 @@ public class AppService {
 
     // 승인된 사용자 조회
     public List<App> getApprovedApplications(Long postId) {
-        return appRepository.findByPostIdAndStatus(postId, "{\"status\":\"수락\"}");
+        return appRepository.findByPostIdAndStatus(postId, "APPROVED");
     }
 
 

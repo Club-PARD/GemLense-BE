@@ -51,6 +51,7 @@ public class Land {
     private Post post;
 
     public void updateCurrentMember() {
+
         this.currentMember = landUsers.size();
     }
 }

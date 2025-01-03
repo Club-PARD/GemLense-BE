@@ -20,7 +20,7 @@ public class App {
 
     @ManyToOne
     @JoinColumn(name = "postId", nullable = false)
-    @JsonBackReference // 직렬화에서 Post 제외
+    @JsonBackReference
     private Post post;
 
     @ManyToOne

@@ -35,14 +35,4 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
-
-    public long getApprovedCount() {
-        return applications.stream()
-                .filter(app -> "APPROVED".equals(app.getStatus()))
-                .count();
-    }
-
-    public long getTotalApplicants() {
-        return applications.size();
-    }
 }
