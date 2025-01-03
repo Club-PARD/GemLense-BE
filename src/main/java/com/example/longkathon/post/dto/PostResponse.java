@@ -28,4 +28,31 @@ public class PostResponse {
     private long approvedCount;   // 승인된 지원자 수
     private long totalApplicants; // 지원자 총 수
 
+    private String status; // App의 status 추가
+
+    // Constructor
+    public PostResponse(Long postId, String title, String category, String status) {
+        this.postId = postId;
+        this.title = title;
+        this.category = category;
+        this.status = status;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }
+
+

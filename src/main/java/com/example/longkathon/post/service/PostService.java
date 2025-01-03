@@ -103,9 +103,24 @@ public class PostService {
         List<Post> posts = postRepository.findByApplications_User_UserId(userId);
 
         return posts.stream()
-                .map(this::mapPostToResponse)
+                .map(post -> {
+                    // App 엔티티에서 현재 user와 관련된 status 가져오기
+                    String status = post.getApplications().stream()
+                            .filter(app -> app.getUser().getUserId().equals(userId))
+                            .map(App::getStatus)
+                            .findFirst() // 한 유저는 한 개의 상태만 가질 것으로 가정
+                            .orElse("UNKNOWN");
+
+                    return new PostResponse(
+                            post.getPostId(),
+                            post.getTitle(),
+                            post.getCategory(),
+                            status
+                    );
+                })
                 .collect(Collectors.toList());
     }
+
 
     private PostResponse mapPostToResponse(Post post) {
         // User 엔티티에서 ownerName 가져오기
