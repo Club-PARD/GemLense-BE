@@ -20,12 +20,13 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
 - 프로젝트 이름: wecand 🏠
 - 프로젝트 지속기간: 2024.12.16-2025.01.05
 - 개발 엔진 및 언어: Spring boot, java
+- 데이터베이스: MYSQL
 
 ## 기능
 
-|![image](https://github.com/user-attachments/assets/da25b0a5-56e6-4d0c-a4da-d6c3fbd90acb)|
-|:---:|
-|랜드 화면|
+|![image](https://github.com/user-attachments/assets/9d5be364-fe27-4d46-9d5e-f8b3bb16b74d)|![image](https://github.com/user-attachments/assets/5affe811-055a-41df-ab7c-fa4d91112d8c)|![image](https://github.com/user-attachments/assets/da25b0a5-56e6-4d0c-a4da-d6c3fbd90acb)|
+|:---:|:---:|:---:|
+|역량카드 만들기|지원 및 랜드생성|랜드 화면|
 
 공모전 팀을 구하고 싶은 사람, 그리고 같이 팀활동을 하면서 서로의 역량을 파악하기 힘들기 때문에 이를 해결해주려고 합니다.<br>
 - 개인 역량카드 만들기 ⚔️<br>
