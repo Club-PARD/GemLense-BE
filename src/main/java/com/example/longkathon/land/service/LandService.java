@@ -183,7 +183,7 @@ public class LandService {
         List<LandUser> newMembers = new ArrayList<>();
         newMembers.add(ownerLandUser);
 
-        List<App> approvedApplications = appRepository.findByPostIdAndStatus(land.getPost().getPostId(), "{\"status\":\"수락\"}");
+        List<App> approvedApplications = appRepository.findByPostIdAndStatus(land.getPost().getPostId(), "\"APPROVED\"");
         final int[] num = {2};
         approvedApplications.forEach(app -> {
             User user = app.getUser();
