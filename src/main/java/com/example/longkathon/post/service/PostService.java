@@ -104,19 +104,20 @@ public class PostService {
 
         return posts.stream()
                 .map(post -> {
-                    // App 엔티티에서 현재 user와 관련된 status 가져오기
+                    // 현재 사용자의 `App` 엔티티에서 `status` 가져오기
                     String status = post.getApplications().stream()
                             .filter(app -> app.getUser().getUserId().equals(userId))
                             .map(App::getStatus)
-                            .findFirst() // 한 유저는 한 개의 상태만 가질 것으로 가정
+                            .findFirst()
                             .orElse("UNKNOWN");
 
-                    return new PostResponse(
-                            post.getPostId(),
-                            post.getTitle(),
-                            post.getCategory(),
-                            status
-                    );
+                    // PostResponse 생성
+                    return PostResponse.builder()
+                            .postId(post.getPostId())
+                            .title(post.getTitle())
+                            .category(post.getCategory())
+                            .status(status) // status 설정
+                            .build();
                 })
                 .collect(Collectors.toList());
     }
