@@ -1,10 +1,7 @@
 <div align="center">
-<h2>
    
    ![image](https://github.com/user-attachments/assets/330e3a2d-f92a-47bd-a87d-6d482eaa8e62)
    
-</h2>
-
 wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량을 파악하며 공모전 팀원을 모집합니다. </br>
 공모전에 함께 할 최적의 파트너를 찾고, 최고의 팀워크를 완성하세요!  더 나은 협업의 시작, wecand:
 
@@ -16,11 +13,16 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
   - [기능](#기능)
   - [게임 플레이 방식](#게임-플레이-방식)
 
-## 개요
+## 개요 및 백엔드 개발도구
 - 프로젝트 이름: wecand 🏠
 - 프로젝트 지속기간: 2024.12.16-2025.01.05
 - 개발 엔진 및 언어: Spring boot, java
-- 데이터베이스: MYSQL
+- 데이터베이스: MYSQL JPA(Hibernate)  
+- API 설계: RESTful 방식  
+- 파일 관리: FireBase를 사용한 파일 업로드 및 저장  
+- 서버 배포: AWS EC2를 사용한 애플리케이션 배포  
+- 문서화 도구: Swagger(OpenAPI 1.0)
+- 빌드 도구: Gradle
 
 ## 기능
 
@@ -37,21 +39,21 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
 방장이 수락 혹은 거절하고 수락 된 사람들과 함께 랜드를 생성하게 됩니다. 그 랜드 안에는 개개인의 카드를 볼 수 있어 팀원들의 정보를 알 수 있게 됩니다. 또한 안에 노션과 같은 url을 기입하는 칸이 있어 랜드를 통해 팀 활동을 하는데 도움을 줍니다.
 
 ## 기타 설명
-- 배포방법<br>
-AWS EC2
 
--API 명세서(Swagger)<br>
+<h4> 1) Swagger img</h4> 
 
 |![image](https://github.com/user-attachments/assets/8b7a6264-e139-4c07-ba63-5e1324d400f6)|![image](https://github.com/user-attachments/assets/d24f4580-667c-4197-8783-a9dd83296183)|
 |:---:|:---:|
 |Swagger1|Swagger2|
 
-- 기타(Entity Table)<br>
+<h4> 2) Entity Table</h4>
 
 |![image](https://github.com/user-attachments/assets/c46bf65c-51b0-4c8d-8b81-f6c3bc425bc7))|
 |:---:|
 |ERD|
 
+<h4> 3) GemLense-FE ReadMe Url</h4>
+: https://github.com/Club-PARD/GemLense-FE/blob/main/README.md
 
 끝!
 
