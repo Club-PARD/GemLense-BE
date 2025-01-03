@@ -101,8 +101,11 @@ public class Card {
 
     private String additionalInfo;
 
+    @Column(name = "url", length = 2083) // 컬럼 길이를 DB와 일치시킴
     private String url;
 
+
+    @Column(name = "fileUrl", length = 2083) // 컬럼 길이를 DB와 일치시킴
     private String fileUrl;
 
 }
