@@ -106,7 +106,7 @@ public class LandService {
         }
 
         // 2. 승인된 사용자 조회
-        List<App> approvedApplications = appRepository.findByPostIdAndStatus(postId, "{\"status\":\"수락\"}");
+        List<App> approvedApplications = appRepository.findByPostIdAndStatus(postId, "APPROVED");
 
         if (approvedApplications.isEmpty()) {
             throw new IllegalArgumentException("No approved users found for this post.");
