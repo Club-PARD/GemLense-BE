@@ -137,6 +137,6 @@ public class PostService {
     }
 
     private long countApprovedApplicants(Long postId) {
-        return appRepository.countByPost_PostIdAndStatus(postId, "\"APPROVED\"");
+        return appRepository.countByPost_PostIdAndStatus(postId, "APPROVED");
     }
 }
