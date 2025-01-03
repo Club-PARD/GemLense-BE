@@ -22,6 +22,7 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
 - 개발 엔진 및 언어: Spring boot, java
 
 ## 기능
+
 |![image](https://github.com/user-attachments/assets/da25b0a5-56e6-4d0c-a4da-d6c3fbd90acb)|
 |:---:|
 |랜드 화면|
@@ -38,7 +39,8 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
 - 배포방법<br>
 AWS EC2
 
-- API 명세서(Swagger)<br>
+-API 명세서(Swagger)<br>
+
 |![image](https://github.com/user-attachments/assets/8b7a6264-e139-4c07-ba63-5e1324d400f6)|![image](https://github.com/user-attachments/assets/d24f4580-667c-4197-8783-a9dd83296183)|
 |:---:|:---:|
 |Swagger1|Swagger2|
@@ -47,7 +49,8 @@ AWS EC2
 
 |![image](https://github.com/user-attachments/assets/ae2b8b67-c84a-423a-9dbe-bae12378ba2a)|
 |:---:|
-|ERD(Entity Table)|
+|ERD|
+
 
 끝!
 
