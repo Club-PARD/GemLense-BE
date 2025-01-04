@@ -16,6 +16,8 @@ public class LandResponse {
         private Long ownerId;
         private Integer maxMember;
         private Integer currentMember;
+
+        @Builder.Default
         private List<UrlPairResponse> urlPairs = new ArrayList<>();
 
         @Getter
