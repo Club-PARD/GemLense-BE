@@ -53,7 +53,7 @@ wecand:는 직접 작성한 역량카드로 서로의 작업 스타일과 역량
 |ERD|
 
 <h4> 3) GemLense-FE ReadMe Url</h4>
-: https://github.com/Club-PARD/GemLense-FE/blob/main/README.md
+: https://github.com/Club-PARD/GemLense-FE
 </br>
 </br>
 </br>
