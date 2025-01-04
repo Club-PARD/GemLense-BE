@@ -2,6 +2,7 @@ package com.example.longkathon.land.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LandResponse {
@@ -15,8 +16,16 @@ public class LandResponse {
         private Long ownerId;
         private Integer maxMember;
         private Integer currentMember;
-        private List<String> urlNameList;
-        private List<String> urlList;
+        private List<UrlPairResponse> urlPairs = new ArrayList<>();
+
+        @Getter
+        @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class UrlPairResponse {
+            private String url;
+            private String urlName;
+        }
     }
 
     @Getter

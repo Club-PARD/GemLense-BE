@@ -1,6 +1,7 @@
 package com.example.longkathon.land.controller;
 
 import com.example.longkathon.land.dto.LandRequest;
+import com.example.longkathon.land.dto.LandResponse;
 import com.example.longkathon.land.dto.LandResponse.LandUserResponse;
 import com.example.longkathon.land.service.LandService;
 import lombok.RequiredArgsConstructor;
@@ -27,25 +28,21 @@ public class LandController {
         return ResponseEntity.ok(landService.getMembersByLand(landId));
     }
 
-    @GetMapping("/{landId}/urls")
-    public ResponseEntity<List<String>> getUrls(@PathVariable Long landId) {
-        return ResponseEntity.ok(landService.getUrls(landId));
+    @GetMapping("/{landId}/urlPairs")
+    public ResponseEntity<List<LandResponse.LandDetailsResponse.UrlPairResponse>> getUrlPairs(
+            @PathVariable Long landId
+    ) {
+        List<LandResponse.LandDetailsResponse.UrlPairResponse> responseList
+                = landService.getUrlPairs(landId);
+        return ResponseEntity.ok(responseList);
     }
 
-    @GetMapping("/{landId}/urlnames")
-    public ResponseEntity<List<String>> getUrlNames(@PathVariable Long landId) {
-        return ResponseEntity.ok(landService.getUrlNames(landId));
-    }
-
-    @PostMapping("/{landId}/url")
-    public ResponseEntity<Void> addUrl(@PathVariable Long landId, @RequestBody String url) {
-        landService.addUrl(landId, url);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/{landId}/urlName")
-    public ResponseEntity<Void> addUrlName(@PathVariable Long landId, @RequestBody String urlName) {
-        landService.addUrlName(landId, urlName);
+    @PostMapping("/{landId}/urlPairs")
+    public ResponseEntity<Void> addUrlPairs(
+            @PathVariable Long landId,
+            @RequestBody List<LandRequest.CreateLandRequest.UrlPairRequest> urlPairs
+    ) {
+        landService.addUrlPairs(landId, urlPairs);
         return ResponseEntity.ok().build();
     }
 

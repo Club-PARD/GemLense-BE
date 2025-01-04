@@ -50,8 +50,17 @@ public class Land {
     @JoinColumn(name = "post_id", unique = true, nullable = false) // 1대1 관계 설정
     private Post post;
 
-    public void updateCurrentMember() {
+    @ElementCollection
+    @CollectionTable(name = "land_url_info", joinColumns = @JoinColumn(name = "land_id"))
+    private List<UrlPair> urlPairs = new ArrayList<>();
 
-        this.currentMember = landUsers.size();
+    @Embeddable
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UrlPair {
+        private String url;
+        private String urlName;
     }
 }

@@ -2,7 +2,9 @@ package com.example.longkathon.land.service;
 
 import com.example.longkathon.application.entity.App;
 import com.example.longkathon.application.repository.AppRepository;
+import com.example.longkathon.land.dto.LandRequest;
 import com.example.longkathon.land.dto.LandRequest.CreateLandRequest;
+import com.example.longkathon.land.dto.LandResponse;
 import com.example.longkathon.land.dto.LandResponse.LandDetailsResponse;
 import com.example.longkathon.land.dto.LandResponse.LandUserResponse;
 import com.example.longkathon.land.entity.Land;
@@ -48,51 +50,38 @@ public class LandService {
 
 
 
-    // 특정 팀원의 카드 조회 (가정: CardService를 통해 카드 조회)
-    public Object getMemberCardByLandAndUser(Long landId, Long userId) {
-        Land land = landRepository.findById(landId)
-                .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
-
-        LandUser landUser = land.getLandUsers().stream()
-                .filter(user -> user.getUser().getUserId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("User not found in this land."));
-
-        // 카드 조회 서비스 호출 (CardService)
-        return "CardService에서 해당 사용자의 카드 조회 로직 추가";
-    }
-
-    // URL 리스트 조회
-    public List<String> getUrls(Long landId) {
-        Land land = landRepository.findById(landId)
-                .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
-
-        return land.getUrlList();
-    }
-
-    public List<String> getUrlNames(Long landId) {
-        Land land = landRepository.findById(landId)
-                .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
-
-        return land.getUrlList();
-    }
-
-    // URL 추가 (urlName)
     @Transactional
-    public void addUrlName(Long landId, String urlName) {
+    public List<LandResponse.LandDetailsResponse.UrlPairResponse> getUrlPairs(Long landId) {
+        // 1) Land 엔티티 조회
         Land land = landRepository.findById(landId)
                 .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
-        land.getUrlNameList().add(urlName);
-        landRepository.save(land);
+
+        // 2) Land가 가진 urlPairs(엔티티) -> Response DTO 변환
+        //    (Land.UrlPair -> UrlPairResponse)
+        return land.getUrlPairs().stream()
+                .map(pair -> new LandResponse.LandDetailsResponse.UrlPairResponse(
+                        pair.getUrl(),
+                        pair.getUrlName()
+                ))
+                .collect(Collectors.toList());
     }
 
-    // URL 추가 (url)
-    @Transactional
-    public void addUrl(Long landId, String url) {
+    /**
+     * (url, urlName) 쌍들 여러 개 추가
+     */
+    public void addUrlPairs(Long landId, List<LandRequest.CreateLandRequest.UrlPairRequest> urlPairRequests) {
+        // 1) Land 엔티티 조회
         Land land = landRepository.findById(landId)
                 .orElseThrow(() -> new IllegalArgumentException("Land not found with ID: " + landId));
-        land.getUrlList().add(url);
-        landRepository.save(land);
+
+        // 2) Request DTO -> 엔티티 변환 후 리스트에 추가
+        //    (UrlPairRequest -> Land.UrlPair)
+        for (LandRequest.CreateLandRequest.UrlPairRequest req : urlPairRequests) {
+            land.getUrlPairs().add(
+                    new Land.UrlPair(req.getUrl(), req.getUrlName())
+            );
+        }
+        // 영속성 컨텍스트로 관리 중이므로, 명시적 save() 없이도 자동 반영
     }
 
     @Transactional

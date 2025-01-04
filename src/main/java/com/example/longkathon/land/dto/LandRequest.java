@@ -1,11 +1,10 @@
 package com.example.longkathon.land.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LandRequest {
     @Getter
@@ -18,5 +17,15 @@ public class LandRequest {
         private Integer maxMember;
         private LocalDateTime startDate;
         private LocalDateTime endDate;
+        private List<UrlPairRequest> urlPairs;
+
+        @Getter
+        @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class UrlPairRequest {
+            private String url;
+            private String urlName;
+        }
     }
 }
