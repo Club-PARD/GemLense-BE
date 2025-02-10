@@ -35,4 +35,19 @@ public class Post {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
+
+    public Post(Long postId, String title, String category, String date, Long member,
+                String url, String memo, String memo2, LocalDateTime createTime, Long ownerId, String img) {
+        this.postId = postId;
+        this.title = title;
+        this.category = category;
+        this.date = date;
+        this.member = member;
+        this.url = url;
+        this.memo = memo;
+        this.memo2 = memo2;
+        this.createTime = createTime;
+        this.ownerId = ownerId;
+        this.img = img;
+    }
 }
