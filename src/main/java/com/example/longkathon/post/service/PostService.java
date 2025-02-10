@@ -147,4 +147,8 @@ public class PostService {
     private long countApprovedApplicants(Long postId) {
         return appRepository.countByPost_PostIdAndStatus(postId, "APPROVED");
     }
+
+    public List<Post> searchPosts(String keyword) {
+        return postRepository.findByTitleContaining(keyword);
+    }
 }

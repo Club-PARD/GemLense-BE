@@ -43,4 +43,4 @@
             List<UserResponse.LandInfoResponse> response = userService.getLandsByUserId(userId);
             return ResponseEntity.ok(response);
         }
-    }
+    }   

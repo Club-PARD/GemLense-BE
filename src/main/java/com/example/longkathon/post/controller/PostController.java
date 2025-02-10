@@ -2,6 +2,7 @@ package com.example.longkathon.post.controller;
 
 import com.example.longkathon.post.dto.PostRequest;
 import com.example.longkathon.post.dto.PostResponse;
+import com.example.longkathon.post.entity.Post;
 import com.example.longkathon.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +52,11 @@ public class PostController {
     public ResponseEntity<List<PostResponse>> getPostsAppliedByUser(@PathVariable Long userId) {
         List<PostResponse> posts = postService.getPostsAppliedByUser(userId);
         return ResponseEntity.ok(posts);
+    }
+
+    @PostMapping("/search")
+    public List<Post> searchPosts(@RequestParam String keyword) {
+        return postService.searchPosts(keyword);
     }
 
 

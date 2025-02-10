@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByOwnerId(Long ownerId);
-    List<Post> findByApplications_User_UserId(Long userId); // 사용자가 신청한 글 조회
+    List<Post> findByTitleContaining(String keyword);
 }
