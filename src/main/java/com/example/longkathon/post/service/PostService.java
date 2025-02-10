@@ -149,6 +149,6 @@
             }
 
             public List<Post> searchPosts(String keyword) {
-                return postRepository.findByTitleContaining(keyword);
+                return postRepository.findPostsWithoutApplications(keyword);
             }
         }
