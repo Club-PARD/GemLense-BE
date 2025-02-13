@@ -148,7 +148,7 @@
                 return appRepository.countByPost_PostIdAndStatus(postId, "APPROVED");
             }
 
-            public List<Post> searchPosts(String keyword) {
-                return postRepository.findPostsWithoutApplications(keyword);
+            public List<Post> searchPosts(String keyword, String category) {
+                return postRepository.findPostsWithoutApplications(keyword, category);
             }
         }
