@@ -54,7 +54,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public List<Post> searchPosts(@RequestParam String keyword) {
         return postService.searchPosts(keyword);
     }
