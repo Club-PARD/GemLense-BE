@@ -10,9 +10,13 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT new Post(p.postId, p.title, p.category, p.date, p.member, p.url, p.memo, p.memo2, p.createTime, p.ownerId, p.img) " +
-            "FROM Post p WHERE p.title LIKE %:keyword% " +
-            "AND (:category IS NULL OR :category = '' OR p.category = :category)")
+            "FROM Post p WHERE p.title LIKE %:keyword%")
+    List<Post> findPostsByKeyword(@Param("keyword") String keyword);
+
+    @Query("SELECT new Post(p.postId, p.title, p.category, p.date, p.member, p.url, p.memo, p.memo2, p.createTime, p.ownerId, p.img) " +
+            "FROM Post p WHERE p.title LIKE %:keyword% AND p.category = :category")
     List<Post> findPostsWithoutApplications(@Param("keyword") String keyword, @Param("category") String category);
+
 
     List<Post> findByOwnerId(Long ownerId);
 }

@@ -55,9 +55,11 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public List<Post> searchPosts(@RequestParam String keyword, String category) {
+    public List<Post> searchPosts(@RequestParam String keyword,
+                                  @RequestParam(required = false) String category) {
         return postService.searchPosts(keyword, category);
     }
+
 
 
 }

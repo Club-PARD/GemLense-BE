@@ -149,6 +149,10 @@
             }
 
             public List<Post> searchPosts(String keyword, String category) {
+                if (category == null || category.isEmpty()) {
+                    return postRepository.findPostsByKeyword(keyword);
+                }
                 return postRepository.findPostsWithoutApplications(keyword, category);
             }
+
         }
