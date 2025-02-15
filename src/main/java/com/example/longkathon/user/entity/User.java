@@ -21,8 +21,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    private String username;
     private String name;
     private String email;
+    private String role;
     private String cardInfo;
 
     @Builder.Default

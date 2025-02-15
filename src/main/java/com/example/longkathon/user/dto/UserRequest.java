@@ -1,12 +1,14 @@
 
 package com.example.longkathon.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
+@Setter
 public class UserRequest {
+    private String role;
+    private String name;
+    private String username;
 
     @Getter
     @Builder
