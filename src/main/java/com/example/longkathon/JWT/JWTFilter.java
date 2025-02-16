@@ -21,74 +21,67 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
         String requestUri = request.getRequestURI();
 
-        if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
-
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
-
+        // ✅ Swagger 관련 요청은 JWT 필터를 거치지 않도록 예외 처리
+        if (requestUri.startsWith("/swagger-ui") || requestUri.startsWith("/v3/api-docs")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        //cookie들을 불러온 뒤 Authorization Key에 담긴 쿠키를 찾음
+        // ✅ 로그인 및 OAuth2 관련 요청도 JWT 필터 예외 처리
+        if (requestUri.matches("^\\/login(?:\\/.*)?$") || requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // ✅ 쿠키에서 Authorization 토큰 찾기
         String authorization = null;
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-
-            System.out.println(cookie.getName());
-            if (cookie.getName().equals("Authorization")) {
-
-                authorization = cookie.getValue();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("Authorization".equals(cookie.getName())) {
+                    authorization = cookie.getValue();
+                    break;
+                }
             }
         }
 
-        //Authorization 헤더 검증
+        // ✅ Authorization 헤더 검증 (없으면 필터 통과)
         if (authorization == null) {
-
             System.out.println("token null");
             filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        //토큰
+        // ✅ 토큰 검증
         String token = authorization;
-
-        //토큰 소멸 시간 검증
         if (jwtUtil.isExpired(token)) {
-
             System.out.println("token expired");
             filterChain.doFilter(request, response);
-
-            //조건이 해당되면 메소드 종료 (필수)
             return;
         }
 
-        //토큰에서 username과 role 획득
+        // ✅ 토큰에서 username과 role 추출
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
-        //userDTO를 생성하여 값 set
+        // ✅ UserDTO를 생성하여 값 설정
         UserRequest u = new UserRequest();
         u.setUsername(username);
         u.setRole(role);
 
-        //UserDetails에 회원 정보 객체 담기
+        // ✅ 스프링 시큐리티 인증 토큰 생성
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(u);
+        Authentication authToken = new UsernamePasswordAuthenticationToken(
+                customOAuth2User, null, customOAuth2User.getAuthorities());
 
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
-        //세션에 사용자 등록
+        // ✅ 세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
-
     }
 }
