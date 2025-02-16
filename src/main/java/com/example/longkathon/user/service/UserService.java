@@ -1,5 +1,6 @@
 package com.example.longkathon.user.service;
 
+import com.example.longkathon.JWT.JWTUtil;
 import com.example.longkathon.application.repository.AppRepository;
 import com.example.longkathon.landUser.entity.LandUser;
 import com.example.longkathon.landUser.repository.LandUserRepository;
@@ -21,6 +22,17 @@ public class UserService {
     private final UserRepository userRepository;
     private final LandUserRepository landUserRepository;
     private final AppRepository appRepository;
+    private final JWTUtil jwtUtil; // JwtUtil 사용
+
+    public String login(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // JWT 생성
+        String token = jwtUtil.createJwt(user.getEmail(), user.getRole(), 1000L * 60 * 60 * 24); // 24시간 유효
+
+        return token; // 컨트롤러에서 쿠키로 저장할 예정
+    }
 
     @Transactional
     public Long getUserIdByEmail(String email) {

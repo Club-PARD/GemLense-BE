@@ -4,6 +4,8 @@
     import com.example.longkathon.user.dto.UserResponse;
     import com.example.longkathon.user.service.UserService;
     import lombok.RequiredArgsConstructor;
+    import org.springframework.http.HttpHeaders;
+    import org.springframework.http.ResponseCookie;
     import org.springframework.http.ResponseEntity;
     //import org.springframework.security.core.annotation.AuthenticationPrincipal;
     //import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -41,4 +43,22 @@
             List<UserResponse.LandInfoResponse> response = userService.getLandsByUserId(userId);
             return ResponseEntity.ok(response);
         }
+
+        @PostMapping("/login")
+        public ResponseEntity<?> login(@RequestBody UserRequest req) {
+            String token = userService.login(req.getEmail() ); // 로그인 후 JWT 발급
+
+            // 쿠키 생성 (HttpOnly, Secure 설정)
+            ResponseCookie cookie = ResponseCookie.from("jwt", token)
+                    .httpOnly(true)  // XSS 공격 방지
+                    .secure(false)    // HTTPS 사용 시 true로 변경
+                    .path("/")        // 모든 요청에서 쿠키 사용 가능
+                    .maxAge(7 * 24 * 60 * 60) // 7일 유지
+                    .build();
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body("Login successful");
+        }
+
     }   

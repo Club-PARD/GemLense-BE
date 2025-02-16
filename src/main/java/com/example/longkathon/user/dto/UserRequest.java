@@ -9,6 +9,7 @@ public class UserRequest {
     private String role;
     private String name;
     private String username;
+    private String email;
 
     @Getter
     @Builder
