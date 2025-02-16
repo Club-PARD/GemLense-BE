@@ -4,7 +4,6 @@ import com.example.longkathon.JWT.JWTFilter;
 import com.example.longkathon.JWT.JWTUtil;
 import com.example.longkathon.login.OAuth2.CustomSuccessHandler;
 import com.example.longkathon.login.service.CustomOauth2UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,43 +30,27 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable());
 
-        http
-                .csrf(auth -> auth.disable())
-                .formLogin(auth -> auth.disable())
-                .httpBasic(auth -> auth.disable());
-
-        // ✅ Swagger 관련 경로는 인증 없이 접근 가능하도록 설정
+        // ✅ 모든 요청을 로그인 없이 허용
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/**").permitAll() // 🔥 모든 경로 허용
+                        .anyRequest().permitAll()
                 );
 
-        // ✅ JWT 필터 추가 (Swagger 관련 요청 제외)
+        // ✅ JWT 필터 추가 (검증 강제 X)
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2AuthorizationCodeGrantFilter.class);
 
-        // ✅ 세션 설정 : STATELESS
+        // ✅ 세션을 사용하지 않도록 설정 (STATELESS)
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        // ✅ OAuth2 로그인 설정
-        http
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                        .successHandler(customSuccessHandler)
-                );
 
         return http.build();
     }
@@ -75,7 +58,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Collections.singletonList("*")); // ✅ 모든 도메인 허용 (더 유연하게 설정)
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://wecand.shop",
+                "https://wecand.shop/swagger-ui",
+                "https://wecand.shop/swagger-ui/index.html",
+                "https://wecand.site",
+                "http://localhost:3000"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setExposedHeaders(Arrays.asList("Set-Cookie", "Authorization"));
@@ -84,5 +73,4 @@ public class SecurityConfig {
 
         return request -> configuration;
     }
-
 }
