@@ -36,17 +36,24 @@ public class SecurityConfig {
                 .formLogin(form -> form.disable())
                 .httpBasic(basic -> basic.disable());
 
-        // ✅ 모든 요청을 로그인 없이 허용
+        // ✅ 로그인 기능은 유지하면서 나머지는 모두 허용
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll() // 🔥 모든 경로 허용
-                        .anyRequest().permitAll()
+                        .requestMatchers("/login/**", "/oauth2/**").authenticated() // 로그인 관련 요청은 인증 필요
+                        .requestMatchers("/**").permitAll() // 나머지는 로그인 없이 접근 가능
                 );
 
-        // ✅ JWT 필터 추가 (검증 강제 X)
+        // ✅ JWT 필터 추가
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(new JWTFilter(jwtUtil), OAuth2AuthorizationCodeGrantFilter.class);
+
+        // ✅ OAuth2 로그인 설정 유지
+        http
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler) // 로그인 성공 시 처리
+                );
 
         // ✅ 세션을 사용하지 않도록 설정 (STATELESS)
         http
