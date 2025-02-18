@@ -61,7 +61,7 @@ public class UserController {
         // 쿠키 생성 (HttpOnly, Secure 설정)
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)  // XSS 공격 방지
-                .secure(false)    // HTTPS 사용 시 true로 변경
+                .secure(true)    // HTTPS 사용 시 true로 변경
                 .path("/")        // 모든 요청에서 쿠키 사용 가능
                 .maxAge(7 * 24 * 60 * 60) // 7일 유지
                 .build();
