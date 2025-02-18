@@ -96,4 +96,10 @@ public class UserService {
         return appRepository.countByPost_PostIdAndStatus(landId, "APPROVED");
     }
 
+
+    public Long getUserIdByUsername(String username) {
+        return userRepository.findUserIdByUsername(username)
+                .orElse(null); // Optional 처리
+    }
+
 }
