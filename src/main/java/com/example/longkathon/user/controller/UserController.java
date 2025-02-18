@@ -1,16 +1,21 @@
     package com.example.longkathon.user.controller;
 
+    import com.example.longkathon.JWT.JWTUtil;
     import com.example.longkathon.user.dto.UserRequest;
     import com.example.longkathon.user.dto.UserResponse;
     import com.example.longkathon.user.service.UserService;
+    import io.jsonwebtoken.Claims;
     import lombok.RequiredArgsConstructor;
+    import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpHeaders;
+    import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseCookie;
     import org.springframework.http.ResponseEntity;
     //import org.springframework.security.core.annotation.AuthenticationPrincipal;
     //import org.springframework.security.oauth2.core.user.OAuth2User;
     import org.springframework.web.bind.annotation.*;
 
+    import java.util.Collections;
     import java.util.List;
 
     @RestController
@@ -18,6 +23,8 @@
     @RequiredArgsConstructor
     public class UserController {
         private final UserService userService;
+
+        private final JWTUtil jwtUtil;
 
         @PostMapping("/name-email")
         public ResponseEntity<Long> saveNameAndEmail(@RequestBody UserRequest.UserNameEmailRequest req) {
@@ -59,6 +66,27 @@
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body("Login successful");
+        }
+
+        public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
+            try {
+                String jwt = token.replace("Bearer ", ""); // "Bearer " 제거
+                Claims claims = jwtUtil.parseClaims(jwt);
+                String email = claims.get("username", String.class); // JWT에서 email 추출
+
+                if (email == null) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email not found in token");
+                }
+
+                Long userId = userService.getUserIdByEmail(email); // 이메일 기반으로 userId 조회
+                if (userId == null) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+                }
+
+                return ResponseEntity.ok(Collections.singletonMap("userId", userId));
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+            }
         }
 
     }   
