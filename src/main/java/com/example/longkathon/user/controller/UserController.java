@@ -7,6 +7,7 @@ import com.example.longkathon.user.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -55,21 +56,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserRequest req) {
-        String token = userService.login(req.getEmail() ); // 로그인 후 JWT 발급
+    public ResponseEntity<?> login(@RequestBody UserRequest req, HttpServletRequest request) {
+        String token = userService.login(req.getEmail()); // JWT 발급
 
-        // 쿠키 생성 (HttpOnly, Secure 설정)
+        boolean isLocal = request.getHeader("origin") != null && request.getHeader("origin").contains("localhost"); // 로컬 여부 확인
+        boolean isSecure = !isLocal; // 로컬이 아니면 Secure 적용
+
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                .httpOnly(true)  // XSS 공격 방지
-                .secure(true)    // HTTPS 사용 시 true로 변경
-                .path("/")        // 모든 요청에서 쿠키 사용 가능
+                .httpOnly(true)
+                .secure(isSecure)  // ✅ HTTPS 환경에서는 Secure 적용, 로컬에서는 제거
+                .path("/")
+                .sameSite(isSecure ? "None" : "Lax") // ✅ HTTPS에서는 "None", 로컬에서는 "Lax"
                 .maxAge(7 * 24 * 60 * 60) // 7일 유지
                 .build();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.SET_COOKIE, cookie.toString()) // ✅ 쿠키 추가
                 .body("Login successful");
     }
+
 
     public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String token) {
         try {
