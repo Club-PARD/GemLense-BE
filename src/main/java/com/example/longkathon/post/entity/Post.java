@@ -2,10 +2,7 @@ package com.example.longkathon.post.entity;
 
 import com.example.longkathon.application.entity.App;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -50,4 +48,6 @@ public class Post {
         this.ownerId = ownerId;
         this.img = img;
     }
+
+
 }
