@@ -10,8 +10,13 @@ import com.example.longkathon.post.repository.PostRepository;
 import com.example.longkathon.user.entity.User;
 import com.example.longkathon.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
+
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,14 +59,15 @@ public class PostService {
 
     public PostResponse getPostById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + postId));
 
         return mapPostToResponse(post);
     }
 
+
     public PostResponse getPostWithApplicants(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + postId));
 
         List<App> applications = appRepository.findByPost_PostId(postId);
 
@@ -78,7 +84,7 @@ public class PostService {
                 .ownerId(post.getOwnerId())
                 .createTime(formatDateTime(post.getCreateTime()))
                 .approvedCount(countApprovedApplicants(post.getPostId()))
-                .totalApplicants(applications.size()) // 지원자 총 수 추가
+                .totalApplicants(applications.size())
                 .applicants(applications.stream()
                         .map(app -> AppResponse.builder()
                                 .applicationId(app.getApplicationId())
@@ -90,6 +96,7 @@ public class PostService {
                         .collect(Collectors.toList()))
                 .build();
     }
+
 
     public List<PostResponse> getPostsByOwner(Long userId) {
         List<Post> posts = postRepository.findByOwnerId(userId);
@@ -168,6 +175,7 @@ public class PostService {
         post.setMemo(postRequest.getMemo());
         post.setMemo2(postRequest.getMemo2());
         post.setImg(postRequest.getImg());
+        post.setTotalApplicants(postRequest.getTotalApplicants());
 
         postRepository.save(post);
         return mapPostToResponse(post);
@@ -176,9 +184,10 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found with ID: " + postId));
         postRepository.delete(post);
     }
+
 
 
 }

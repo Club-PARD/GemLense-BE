@@ -30,6 +30,7 @@ public class Post {
     private LocalDateTime createTime;
     private Long ownerId;
     private String img;
+    private Long totalApplicants;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
