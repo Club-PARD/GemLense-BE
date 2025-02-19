@@ -50,6 +50,7 @@ public class Land {
     @JoinColumn(name = "post_id", unique = true, nullable = false) // 1대1 관계 설정
     private Post post;
 
+    @Builder.Default
     @ElementCollection
     @CollectionTable(name = "land_url_info", joinColumns = @JoinColumn(name = "land_id"))
     private List<UrlPair> urlPairs = new ArrayList<>();
