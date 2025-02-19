@@ -48,6 +48,8 @@ public class Post {
         this.createTime = createTime;
         this.ownerId = ownerId;
         this.img = img;
+        this.totalApplicants = 0L;  // totalApplicants 초기화
+
     }
 
 

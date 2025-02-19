@@ -84,7 +84,7 @@ public class PostService {
                 .ownerId(post.getOwnerId())
                 .createTime(formatDateTime(post.getCreateTime()))
                 .approvedCount(countApprovedApplicants(post.getPostId()))
-                .totalApplicants(applications.size())
+                .totalApplicants((long)applications.size())
                 .applicants(applications.stream()
                         .map(app -> AppResponse.builder()
                                 .applicationId(app.getApplicationId())
@@ -142,7 +142,7 @@ public class PostService {
                 .ownerName(ownerName) // ownerName 설정
                 .createTime(formatDateTime(post.getCreateTime()))
                 .approvedCount(countApprovedApplicants(post.getPostId()))
-                .totalApplicants(post.getApplications().size())
+                .totalApplicants((long)post.getApplications().size())
                 .build();
     }
 

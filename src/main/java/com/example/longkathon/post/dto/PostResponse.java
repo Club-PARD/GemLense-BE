@@ -26,7 +26,7 @@ public class PostResponse {
     private List<AppResponse> applicants;
 
     private long approvedCount;   // 승인된 지원자 수
-    private long totalApplicants; // 지원자 총 수
+    private Long totalApplicants; // 지원자 총 수
 
     private String status;
 
