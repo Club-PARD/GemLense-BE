@@ -12,6 +12,4 @@ public class PostRequest {
     private String memo;
     private String memo2;
     private String img;
-    private Long totalApplicants;
-
 }

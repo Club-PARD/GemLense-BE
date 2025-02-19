@@ -175,7 +175,6 @@ public class PostService {
         post.setMemo(postRequest.getMemo());
         post.setMemo2(postRequest.getMemo2());
         post.setImg(postRequest.getImg());
-        post.setTotalApplicants(postRequest.getTotalApplicants());
 
         postRepository.save(post);
         return mapPostToResponse(post);

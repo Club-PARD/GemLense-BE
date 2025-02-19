@@ -2,7 +2,10 @@ package com.example.longkathon.post.entity;
 
 import com.example.longkathon.application.entity.App;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,7 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +32,6 @@ public class Post {
     private LocalDateTime createTime;
     private Long ownerId;
     private String img;
-    private Long totalApplicants;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<App> applications;
@@ -48,9 +49,5 @@ public class Post {
         this.createTime = createTime;
         this.ownerId = ownerId;
         this.img = img;
-        this.totalApplicants = 0L;  // totalApplicants 초기화
-
     }
-
-
 }
